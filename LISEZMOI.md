@@ -42,3 +42,8 @@ Flèches ← →, clic sur les coins des pages, glissement au doigt sur mobile, 
 - Nouveaux chapitres : Les enfants de Blackwater, L'héritier renié, L'enfant oubliée, La cicatrice de Viper, Les héritiers du mensonge, Huit années sans foyer, Les nuits de Blackwater, Souvenirs communs, Le rêve de Billy Mercer, La fin de leur adolescence, la double page « New Austin, 1890 », La parole de King, Recrutement et trahison, Le registre de la famille, La caisse commune.
 - Édition : **+ Membre** (barre Page) ajoute les trois pages de fiche d'un nouveau Stray ; fonds « Nuit (pleine image) » ; styles « Carnet de comptes » et « Texte clair sur image ».
 - Au premier chargement de cette édition, la version enregistrée précédente est conservée : Projet ▸ Restaurer la version précédente.
+
+## 4e édition — Rhodes et les faiblesses
+- Destination : **Rhodes, Lemoyne**. Au début du RP, les Strays sont encore à Blackwater pour quelques jours ; le quartier général n'est pas choisi.
+- Nouvelles pages : Les derniers jours à Blackwater, conclusion « Vers Lemoyne », double page « THE STRAYS — RHODES, 1890 », étapes « De Blackwater à l'empire », double page « De Blackwater à Rhodes — 1890 » (carte + journal d'installation à remplir), double page « Les failles des chiens errants », « La bouteille des Blackwood ».
+- Chaque fiche de membre a une page « Sa faille » : faiblesse officielle, origine, manifestations, conséquences en jeu.

@@ -4,6 +4,16 @@
    ===================================================================== */
 (function () {
   const { T, I, A, P, head, sub, nar, prop, push } = window.SB;
+
+  /* Page « faille » : faiblesse officielle, origine, manifestations, jeu */
+  const faille = (code, name, quote, origin, signs, play, note) => P('', [
+    ...sub(code + ' — Sa faille'),
+    T(52, 106, 456, 100, '<p class="sc red" style="font-size:12px;letter-spacing:.2em;margin:0">Faiblesse officielle — ' + name + '</p><p style="font-family:\'IM Fell English\',serif;font-style:italic;font-size:15px;margin:0">« ' + quote + ' »</p>', { v: 'card' }),
+    T(52, 216, 456, 210, '<h3>Origine</h3>' + origin, { st: { fs: 13.5 } }),
+    T(52, 432, 220, 220, '<h3>Ce qui se passe</h3><ul>' + signs.map(s => '<li>' + s + '</li>').join('') + '</ul>', { st: { fs: 13 } }),
+    T(288, 432, 220, 220, '<h3>En jeu</h3><ul>' + play.map(s => '<li>' + s + '</li>').join('') + '</ul>', { st: { fs: 13 } }),
+    T(52, 664, 456, 80, '<p style="font-size:12.5px"><i>' + note + '</i></p>', { v: 'archive' })
+  ]);
   const idCard = (rows) => `<h3>Signalement</h3><table>${rows.map(([a, b]) => `<tr><td>${a}</td><td>${b}</td></tr>`).join('')}</table>`;
 
   /* ---------- LE SERMENT DES STRAYS ---------- */
@@ -82,6 +92,13 @@
     T(52, 660, 456, 80, `<p style="font-size:14px"><span class="sc red">Ce qui le lie aux Strays —</span> <i>il a perdu une famille en la refusant ; il ne laissera personne lui prendre celle qu'il a choisie.</i></p>`)
   ]));
 
+  push(faille('King', 'claustrophobie',
+    'Claustrophobe, Billy panique lorsqu\'il est enfermé dans un espace étroit sans possibilité de sortir.',
+    '<p>Enfant, Billy vivait dans l\'immense demeure des Mercer. Edward Mercer, homme autoritaire, supportait mal que son fils lui désobéisse. Le jour où il le surprit à aider en secret des enfants pauvres, il le fit enfermer pendant des heures dans une petite réserve sans fenêtre, au fond des dépendances. Billy appela, frappa contre la porte. Personne ne vint lui ouvrir. Depuis, il supporte très mal les espaces confinés dont il ne contrôle pas la sortie.</p>',
+    ['Supportable tant qu\'il sait pouvoir sortir librement.', 'Enfermé sans issue : panique, oppression dans la poitrine, souffle court.', 'Perte de son sang-froid et de sa capacité à réfléchir calmement.'],
+    ['Enfermement, capture, cellule, cave ou coffre verrouillé.', 'Un adversaire qui connaît sa faiblesse peut s\'en servir.', 'Un contraste fort avec le chef maître de lui-même que voient les autres.'],
+    'Faiblesse officielle, à jouer réellement : elle ne disparaît pas quand elle devient gênante, mais ne l\'empêche pas d\'agir hors de ces situations.'));
+
   /* ---------- WILD ---------- */
   push(P('Nellie « Wild » Whitmore', [
     ...head("L'arnaqueuse · WILD", 'Nellie « Wild » Whitmore'),
@@ -109,6 +126,13 @@
     T(288, 396, 220, 196, `<h3>Objectif</h3><p style="font-size:13.5px">Devenir la plus grande bandit de l'Ouest : son nom dans les journaux, son visage sur les affiches.</p><h3>Limite morale</h3><p style="font-size:13.5px">Elle ne trahira jamais volontairement les Strays.</p>`, { v: 'card' }),
     T(52, 604, 456, 136, `<h3>Évolution envisagée</h3><p style="font-size:14px">Une descente progressive dans la criminalité, capable de transformer une petite arnaqueuse joueuse en véritable hors-la-loi dangereuse — et de lui faire payer ce prix.</p>`)
   ]));
+
+  push(faille('Wild', 'phobie du sang',
+    'Nell souffre d\'une phobie du sang. À sa vue, elle peut être prise de nausées, de vertiges ou s\'évanouir.',
+    '<p>Vers huit ans, laissée seule comme souvent, Nell trouva son père étendu au sol après une violente dispute entre ses parents. Il s\'était gravement blessé ; le sang s\'était répandu tout autour de lui. Incapable de comprendre ce qu\'elle voyait, elle resta figée devant la scène avant de courir chercher de l\'aide. Son père survécut. Elle, n\'a jamais pu oublier.</p>',
+    ['Parler de violence, provoquer, jouer les dures : aucun problème.', 'Face à beaucoup de sang : nausées, vertiges, sueurs froides.', 'Dans les cas les plus intenses : perte de connaissance.'],
+    ['Grande difficulté à soigner ou assister un blessé grave.', 'Fusillade, rixe sanglante, blessure d\'un Stray.', 'Un paradoxe pour celle qui rêve d\'être une hors-la-loi célèbre.'],
+    'Faiblesse officielle, à jouer réellement. Elle ne rend pas Nell incapable d\'agir en permanence : elle surgit face au sang, pas à la simple idée de la violence.'));
 
   /* ---------- VIPER ---------- */
   push(P('Ruby « Viper » Hargrove', [
@@ -139,6 +163,13 @@
     T(52, 616, 456, 124, `<p style="font-size:14px"><span class="sc red">Ce qui la lie aux Strays —</span> <i>ils sont les premiers à l'avoir protégée sans rien exiger. Elle ne laissera personne leur faire de mal.</i></p>`)
   ]));
 
+  push(faille('Viper', 'phobie des lames',
+    'Ruby souffre d\'une phobie des lames. La vue d\'un couteau dirigé vers elle peut la faire paniquer.',
+    '<p>Vers treize ou quatorze ans, lors d\'une de ses colères, son père la frappa au visage avec un objet tranchant. La blessure a cicatrisé, mais la peur est restée. Ruby peut voir un couteau posé sur une table, couper du pain ou utiliser une lame au quotidien. Ce qu\'elle ne supporte pas, c\'est une lame pointée vers elle pour la menacer : alors, tout revient.</p>',
+    ['Figement, recul instinctif, tremblements.', 'Perte momentanée de ses moyens.', 'Réaction plus forte encore si la lame approche de son visage.'],
+    ['Menace au couteau, prise d\'otage, interrogatoire.', 'Elle peut toujours se défendre dans bien des situations.', 'Une vulnérabilité précise, liée à sa cicatrice.'],
+    'Faiblesse officielle, à jouer réellement. Elle ne touche que les lames dirigées contre elle, jamais les objets tranchants du quotidien.'));
+
   /* ---------- MONEY ---------- */
   push(P('Scarlett « Money » Blackwood', [
     ...head('La voleuse · MONEY', 'Scarlett « Money » Blackwood'),
@@ -166,6 +197,13 @@
     T(52, 616, 456, 124, `<p style="font-size:14px"><span class="sc red">Ce qui la lie aux Strays —</span> <i>sa mère a gardé le plus beau bijou qu'elle ait volé. Billy, lui, ne lui a jamais rien pris.</i></p>`)
   ]));
 
+  push(faille('Money', 'dépendance à l\'alcool',
+    'Dépendante à l\'alcool, Scarlett subit tremblements et troubles de concentration en cas de manque. Trop ivre, elle perd ses filtres et révèle des secrets.',
+    '<p>Élevée entre les saloons et les tables de jeu de ses parents, Scarlett a vu l\'alcool couler très tôt. À l\'adolescence, elle commença à boire pour imiter les adultes, puis pour se donner de l\'assurance. Avec les années, l\'habitude devint de plus en plus difficile à contrôler. Celle qui aime tout maîtriser — son image, ses mots, les situations — a là sa plus grande faille.</p>',
+    ['En manque : tremblements, nervosité, difficulté à se concentrer.', 'Sa précision au tir peut en souffrir.', 'Trop ivre : elle devient bavarde et désinhibée, révèle sentiments et secrets.'],
+    ['Quelqu\'un qui connaît sa dépendance peut la faire boire pour la faire parler.', 'Un long voyage ou une planque sans alcool peut la rendre moins fiable.', 'Elle ne répond pas forcément à tout : elle garde simplement moins bien ses secrets.'],
+    'Faiblesse officielle, à jouer réellement et avec sérieux : ni comique systématique, ni « sérum de vérité » magique.'));
+
   /* ---------- ACE ---------- */
   push(P('Silas « Ace » Blackwood', [
     ...head('Le joueur · ACE', 'Silas « Ace » Blackwood'),
@@ -191,4 +229,10 @@
     A(330, 520, 80, 112, 'ace', { r: 10 }),
     T(52, 640, 456, 100, `<p style="font-size:14px"><span class="sc red">Ce qui le lie aux Strays —</span> <i>on ne lui a jamais fait porter seul une défaite commune.</i></p>`)
   ]));
+  push(faille('Ace', 'dépendance à l\'alcool',
+    'Dépendant à l\'alcool, Silas subit tremblements et troubles de concentration en cas de manque. Trop ivre, il perd ses filtres et révèle des secrets.',
+    '<p>Son père, Victor Blackwood, l\'emmenait observer des parties de poker où les joueurs passaient des nuits à boire et à miser. Silas a associé l\'alcool à l\'assurance, à la fête, aux joueurs qu\'il admirait. Adolescent, il prit l\'habitude de boire pendant ses parties de cartes. Ce qui n\'était qu\'un jeu est devenu une dépendance.</p>',
+    ['En manque : tremblements, irritabilité, difficulté à se concentrer.', 'Ses parties de poker, son tir et ses décisions en pâtissent.', 'Trop ivre : vantard, imprudent, il parle trop pour impressionner.'],
+    ['Il peut dévoiler des informations compromettantes pour toute la bande.', 'Un adversaire peut l\'inviter à boire pour le faire parler.', 'Il ne dit pas tout, mais garde beaucoup moins bien ses secrets.'],
+    'Faiblesse officielle, à jouer réellement. Elle peut le mettre en danger, lui et les autres Strays.'));
 })();

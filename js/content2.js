@@ -26,7 +26,7 @@
   ], { lvl: 2 }));
   push(P('', [
     ...sub("L'héritier renié — 1882"),
-    body(112, 470, `<p>Billy tente de s'opposer à son père, maladroitement, comme un enfant : un avis de saisie qui disparaît, une famille prévenue avant l'arrivée des huissiers, du pain sorti des cuisines la nuit. Chaque fois, il est découvert. Chaque fois, il est puni.</p>
+    body(112, 470, `<p>Billy tente de s'opposer à son père, maladroitement : un avis de saisie qui disparaît, du pain sorti des cuisines la nuit. Chaque fois, il est puni. Un jour, surpris à aider en secret des enfants pauvres, il est enfermé des heures dans une petite réserve sans fenêtre, au fond des dépendances. Il frappe, il appelle. Personne ne vient. Il n'a jamais oublié cette porte.</p>
       <p>Il se tourne vers sa mère. Margaret l'écoute, baisse les yeux, et lui demande de ne pas faire de scandale. Elle ne le défendra pas — ni ce soir-là, ni les suivants.</p>
       <p>En 1882, Edward Mercer découvre que son fils de quinze ans passe ses journées avec les enfants des quais. Il exige qu'il choisisse. Billy refuse de renoncer à eux. Il est <b>renié et déshérité</b> ; la porte de la maison Mercer se ferme derrière lui.</p>
       <p>Billy n'a plus rien, sinon une poignée de gamins que personne ne réclame. Il les rassemble, partage avec eux ce qu'il trouve, et leur donne un nom : les <span class="sc">Strays</span>. Ce n'est pas encore une bande de hors-la-loi. C'est un refuge.</p>`),
@@ -39,8 +39,8 @@
     ...head('Les enfants de Blackwater · II', "L'enfant oubliée"),
     body(186, 560, `<p class="dropcap">Nellie Whitmore naît en 1871 dans une maison où l'on boit. Son père et sa mère ont la bouteille facile et la mémoire courte ; ils ne sont ni cruels ni tendres. Ils sont absents, même lorsqu'ils sont là.</p>
       <p>Dès l'âge de trois ans, Nell est laissée seule des heures entières. Elle apprend à atteindre le pain sur l'étagère, à allumer le feu, à se taire quand les adultes rentrent de mauvaise humeur. Elle apprend surtout à se débrouiller, parce que personne ne le fera à sa place.</p>
-      <p>On ne l'envoie presque jamais à l'école. Elle n'y reste que quelques mois, de loin en loin, sans que personne ne vérifie si elle y va.</p>
-      <p>Un soir — elle doit avoir neuf ans — elle ne rentre pas. Elle attend sous un porche, grelottante, persuadée que quelqu'un finira par l'appeler. Personne ne vient. À l'aube, ses parents dorment encore. Ils ne remarqueront jamais qu'elle est partie.</p>`)
+      <p>On ne l'envoie presque jamais à l'école. Un soir, vers huit ans, après une violente dispute entre ses parents, elle trouve son père étendu au sol, gravement blessé, dans une mare de sang. Elle reste figée longtemps avant de courir chercher de l'aide. Il survit. Nell, elle, ne supportera plus jamais la vue du sang.</p>
+      <p>Un an plus tard, elle passe une nuit entière dehors. À l'aube, ses parents dorment encore. Ils ne remarqueront jamais qu'elle est partie.</p>`)
   ], { lvl: 2 }));
   push(P('', [
     ...sub("L'enfant oubliée — 1883 – 1885"),
@@ -49,7 +49,7 @@
       <p>Après des années de fugues, elle quitte définitivement ses parents en 1885, à quatorze ans. Elle ne les prévient pas. Elle ne sait pas s'ils s'en sont aperçus.</p>`),
     T(90, 488, 300, 120, `Rue — chui parti cherché du pin avec Ace. Revien vit. Touche pa a mes pome.<br><span style="float:right">— Nel</span>`, { v: 'pinned', r: -2.5, st: { fs: 12.5 } }),
     T(400, 500, 110, 90, `<p style="font-size:11.5px;font-style:italic" class="muted">Billet retrouvé dans le registre, de la main de Nell.</p>`),
-    T(52, 640, 456, 100, `<p style="font-size:13.5px">${prop()} L'âge de la nuit passée dehors et le contenu des billets sont des propositions modifiables par la joueuse.</p>`, { v: 'card' })
+    T(52, 640, 456, 100, `<p style="font-size:13.5px">${prop()} L'âge de la nuit passée dehors et le contenu des billets sont modifiables par la joueuse. L'épisode du sang (vers 1879) est officiel.</p>`, { v: 'card' })
   ]));
 
   /* ---------- LA CICATRICE DE VIPER ---------- */
@@ -74,7 +74,7 @@
   /* ---------- LES HÉRITIERS DU MENSONGE ---------- */
   push(P('Les héritiers du mensonge', [
     ...head('Les enfants de Blackwater · IV', 'Les héritiers du mensonge'),
-    body(186, 560, `<p class="dropcap">Scarlett et Silas Blackwood naissent en 1870, jumeaux d'une famille de voleurs et d'escrocs. Chez eux, on n'apprend pas à lire avant d'apprendre à mentir, à reconnaître un bijou véritable, à vider une poche sans frôler le tissu.</p>
+    body(186, 560, `<p class="dropcap">Scarlett et Silas Blackwood naissent en 1870, jumeaux d'une famille d'escrocs et de joueurs. Leur père, <b>Victor Blackwood</b>, vit dans les saloons, entre les tables de poker et les bouteilles, et ses enfants le suivent. On y apprend à mentir, à vider une poche — et à boire bien trop jeune.</p>
       <p>L'affection, chez les Blackwood, se mérite. Une montre rapportée vaut un sourire ; une bourse bien garnie, une place près de la mère au dîner. Une main vide ne vaut rien. Les parents mettent les jumeaux en compétition permanente : « ta sœur a fait mieux », « ton frère a rapporté davantage ».</p>
       <p>Un jour, Scarlett vole pour sa mère un bijou d'une valeur extraordinaire, rien que pour un regard d'admiration. Sa mère le glisse dans sa poche et ne le lui rendra jamais.</p>
       <p>Quelque temps plus tard, une escroquerie familiale tourne mal. Devant toute la famille, le père désigne Silas comme seul responsable. Silas prend les coups, la honte, et une leçon : celui qui perd porte tout.</p>`)

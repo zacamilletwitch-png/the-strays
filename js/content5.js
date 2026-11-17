@@ -1,5 +1,5 @@
 /* =====================================================================
-   THE STRAYS — Contenu d'origine, 3e édition (5/5)
+   THE STRAYS — Contenu d'origine, 4e édition (5/5)
    Quatrième partie : la parole de King, les liens, la famille,
    le registre des membres, la caisse commune, l'empire, les pages libres
    ===================================================================== */
@@ -108,8 +108,8 @@
     T(80, 108, 400, 344, `<p class="center sc" style="letter-spacing:.2em">Le code</p>
       <p class="center" style="font-size:14px;margin:0"><i>de la main de W. M.</i></p><ol style="font-family:'La Belle Aurore',cursive;font-size:18px;line-height:1.4;padding-left:1.4em;margin-top:.6em">
       <li>On n'abandonne jamais un Stray.</li><li>Ce qui se dit entre nous reste entre nous.</li><li>Personne n'entre sans l'accord de tous.</li><li>On se dispute en famille, jamais devant les autres.</li><li>Le dernier mot revient à King.</li></ol>`, { v: 'letter', r: -1 }),
-    T(52, 476, 456, 190, `<h3>Réputation en 1890</h3><p style="font-size:14.5px">Surveillés à Blackwater, connus de quelques commerçants, <b>inconnus à New Austin</b>. Ni grand braquage, ni territoire, ni empire. Leur ascension se construira exclusivement en jeu.</p>`),
-    T(380, 676, 120, 46, `Inconnus au Sud`, { v: 'stamp', r: -8, st: { fs: 15 } })
+    T(52, 476, 456, 190, `<h3>Réputation en 1890</h3><p style="font-size:14.5px">Surveillés à Blackwater, connus de quelques commerçants, <b>inconnus à Rhodes</b>. Ni grand braquage, ni territoire, ni quartier général, ni empire. Leur ascension se construira exclusivement en jeu.</p>`),
+    T(380, 676, 120, 46, `Inconnus à Rhodes`, { v: 'stamp', r: -8, st: { fs: 15 } })
   ], { lvl: 2 }));
 
   /* ---------- LE REGISTRE DE LA FAMILLE ---------- */
@@ -127,11 +127,21 @@
     T(52, 660, 456, 90, `<p style="font-size:13px"><b>Ajouter un membre :</b> en mode édition, inscrivez-le ici, puis utilisez « + Membre » (trois pages de fiche) et « Carte membre » (sa carte de nom de code).</p>`, { v: 'card' })
   ], { lvl: 2 }));
 
+  /* ---------- ACTIVITÉS ---------- */
+  push(P('Activités envisagées', [
+    ...sub('Activités envisagées'),
+    T(52, 112, 456, 60, `<p style="font-size:14px;font-style:italic">Pistes de jeu, pas un palmarès : aucune de ces activités n'est présentée comme déjà accomplie à Rhodes.</p>`),
+    T(52, 180, 220, 280, `<ul style="font-size:14.5px"><li>Escroqueries et arnaques.</li><li>Vols et cambriolages.</li><li>Parties de poker truquées.</li><li>Contrebande et recel, selon les possibilités du serveur.</li></ul>`),
+    T(288, 180, 220, 280, `<ul style="font-size:14.5px"><li>Braquages, quand leur évolution RP le permettra.</li><li>Rivalités avec d'autres groupes criminels.</li><li>Relations complexes avec les autorités.</li><li>Recherche d'informations et d'opportunités illégales.</li></ul>`),
+    A(60, 470, 80, 112, 'ace', { r: -8 }), A(124, 480, 64, 64, 'chip', {}),
+    T(220, 470, 280, 240, `<h1>WANTED</h1><h2>Personne… encore</h2><p>Cette affiche attend son premier nom.<br>Récompense : à définir.</p>`, { v: 'poster', r: 2 })
+  ], { lvl: 2 }));
+
   /* ---------- LA CAISSE COMMUNE ---------- */
   const ledger = (n) => `<table><tr><th>Date</th><th>Libellé</th><th>Entrée</th><th>Sortie</th><th>Solde</th></tr>${'<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>'.repeat(n)}</table>`;
   push(P('La caisse commune', [
     T(60, 46, 440, 40, `<h2 class="center">La caisse commune</h2>`),
-    T(60, 88, 440, 46, `<p class="center small muted" style="font-style:italic">Carnet de comptes — New Austin, 1890. Tenu par … · Visé par W. M.</p>`),
+    T(60, 88, 440, 46, `<p class="center small muted" style="font-style:italic">Carnet de comptes — Blackwater, puis Rhodes, 1890. Tenu par … · Visé par W. M.</p>`),
     T(52, 140, 456, 600, ledger(22), { v: 'ledger' })
   ], { lvl: 2, bg: 'aged' }));
   push(P('', [
@@ -139,43 +149,75 @@
     T(52, 748, 230, 24, `Dupliquer la page pour un nouveau feuillet.`, { v: 'hand', r: -1, st: { fs: 10 } })
   ], { bg: 'aged' }));
 
-  /* ---------- ACTIVITÉS ---------- */
-  push(P('Activités envisagées', [
-    ...sub('Activités envisagées'),
-    T(52, 112, 456, 60, `<p style="font-size:14px;font-style:italic">Pistes de jeu, pas un palmarès : aucune de ces activités n'est présentée comme déjà accomplie à New Austin.</p>`),
-    T(52, 180, 220, 280, `<ul style="font-size:14.5px"><li>Escroqueries et arnaques.</li><li>Vols et cambriolages.</li><li>Parties de poker truquées.</li><li>Contrebande et recel, selon les possibilités du serveur.</li></ul>`),
-    T(288, 180, 220, 280, `<ul style="font-size:14.5px"><li>Braquages, quand leur évolution RP le permettra.</li><li>Rivalités avec d'autres groupes criminels.</li><li>Relations complexes avec les autorités.</li><li>Recherche d'informations et d'opportunités illégales.</li></ul>`),
-    A(60, 470, 80, 112, 'ace', { r: -8 }), A(124, 480, 64, 64, 'chip', {}),
-    T(220, 470, 280, 240, `<h1>WANTED</h1><h2>Personne… encore</h2><p>Cette affiche attend son premier nom.<br>Récompense : à définir.</p>`, { v: 'poster', r: 2 })
-  ], { lvl: 2 }));
-
   /* ---------- L'EMPIRE ---------- */
   const step = (y, n, t, html) => T(52, y, 456, 230, `<p class="sc red" style="letter-spacing:.2em;font-size:13px;margin:0">Étape ${n}</p><h3 style="font-size:1.25em;color:#2b1d12;font-style:normal;font-family:'IM Fell English SC',serif">${t}</h3>${html}`, { st: { fs: 14 } });
-  push(P("Le projet d'empire", [
-    ...head('Cinquième partie', "Le projet d'empire"),
+  push(P("De Blackwater à l'empire", [
+    ...head('Cinquième partie', "De Blackwater à l'empire"),
     nar(180, 70, `<p>Rien de ce qui suit n'est arrivé. Ce sont des intentions, notées par des gens qui n'avaient encore presque rien — sinon les uns les autres.</p>`),
-    step(262, 'I', 'Survivre', `<p>Trouver un refuge à New Austin, gagner de quoi tenir, établir les premiers contacts, comprendre qui tient quoi. Ne pas se faire arrêter trop vite.</p>`),
-    step(500, 'II', 'Se faire un nom', `<p>Développer les activités criminelles, remplir la caisse commune, faire circuler le nom des Strays — et commencer à attirer l'attention.</p>`)
+    step(262, 'I', 'Les derniers jours à Blackwater', `<p>Préparer le départ : rassembler les affaires, les chevaux et la caisse commune, régler les dernières occupations, profiter des dernières soirées dans la ville où ils ont grandi.</p>`),
+    step(500, 'II', 'Le voyage vers Lemoyne', `<p>Quitter Blackwater et rejoindre Rhodes. La route, ses imprévus et ses rencontres seront joués en RP — rien n'est écrit d'avance.</p>`)
   ], { lvl: 1 }));
   push(P('', [
-    ...sub("Le projet d'empire — suite"),
-    step(112, 'III', 'Étendre leur influence', `<p>Nouer des alliances, assumer des rivalités, augmenter les ressources, développer un réseau. Accueillir de nouveaux Strays.</p>`),
-    step(352, 'IV', 'Bâtir un empire', `<p>Tenter de devenir une organisation criminelle puissante, riche et redoutée — et offrir enfin à la famille le foyer dont Billy parle depuis 1882.</p>`),
-    T(70, 600, 420, 140, `<p class="center" style="font-family:'IM Fell English SC',serif;font-size:19px">Aucun succès n'est garanti.</p><p class="center" style="font-style:italic;font-size:14px">Ce sont des ambitions, pas des faits. Ils peuvent réussir, échouer, se diviser ou disparaître : le jeu décidera.</p>`)
+    ...sub("De Blackwater à l'empire — suite"),
+    step(112, 'III', 'Trouver un foyer', `<p>Chercher à Rhodes ou dans ses environs un quartier général où vivre, se réunir et préparer leurs activités : propriété isolée, bâtisse abandonnée ou tout autre lieu découvert en jeu. <b>Rien n'est encore choisi.</b></p>`),
+    step(352, 'IV', 'Construire leur empire', `<p>Depuis Rhodes, développer peu à peu leur influence criminelle, leurs ressources, leurs alliances et leur réputation — et offrir enfin à la famille le foyer dont Billy parle depuis 1882.</p>`),
+    T(70, 600, 420, 140, `<p class="center" style="font-family:'IM Fell English SC',serif;font-size:19px">Aucun succès n'est garanti.</p><p class="center" style="font-style:italic;font-size:14px">Au début du jeu, les Strays sont encore à Blackwater. Ils ne contrôlent rien à Rhodes. Ils peuvent réussir, échouer, se diviser ou disparaître : le jeu décidera.</p>`)
   ]));
 
-  /* ---------- FAIBLESSES ---------- */
-  push(P('Faiblesses et conflits internes', [
-    ...head('Sixième partie', 'Faiblesses & failles'),
-    body(186, 80, `<p style="font-size:14.5px">Ce qui fait la force des Strays — leurs blessures et leurs ambitions — est aussi ce qui peut les mettre en danger.</p>`),
-    T(52, 270, 456, 470, `<table style="font-size:14px">
-      <tr><td>King</td><td>Le besoin de contrôle, les risques excessifs, le nom Mercer.</td></tr>
-      <tr><td>Wild</td><td>L'impulsivité, la peur de la violence, l'envie d'être remarquée à tout prix.</td></tr>
-      <tr><td>Viper</td><td>L'orgueil, le refus de l'aide, la peur de l'abandon.</td></tr>
-      <tr><td>Money</td><td>Les caprices, la possession, l'incapacité à entendre « non ».</td></tr>
-      <tr><td>Ace</td><td>L'arrogance, le jeu, la défaite impossible à avaler.</td></tr>
-      <tr><td>La famille</td><td>Une ambition d'empire et une règle de loyauté : tôt ou tard, l'une mettra l'autre à l'épreuve.</td></tr></table>`)
+  /* ---------- DE BLACKWATER À RHODES ---------- */
+  push(P('De Blackwater à Rhodes — 1890', [
+    T(40, 46, 480, 50, `<h2 class="center">De Blackwater à Rhodes — 1890</h2>`),
+    A(180, 92, 200, 16, 'divider', {}),
+    A(40, 128, 480, 403, 'mapEast', {}),
+    T(52, 548, 456, 110, `<p style="font-size:14px">Carte de la route projetée, tracée de mémoire et d'après ce qu'en disaient les voyageurs. Les distances sont approximatives ; le chemin réellement suivi sera celui du jeu.</p>`),
+    T(300, 668, 200, 70, `Quelque part par là. On verra bien. — W.`, { v: 'hand', r: -3, st: { fs: 12 } })
+  ], { lvl: 1, bg: 'aged' }));
+  push(P('', [
+    T(52, 46, 456, 50, `<h2 class="center">Journal d'installation</h2>`),
+    A(180, 92, 200, 16, 'divider', {}),
+    T(52, 120, 456, 330, `<table style="font-size:13.5px">
+      <tr><td>Départ de Blackwater</td><td>____ 1890</td></tr>
+      <tr><td>Arrivée à Rhodes</td><td>____ 1890</td></tr>
+      <tr><td>Premier campement</td><td>…</td></tr>
+      <tr><td>Quartier général</td><td><i>À déterminer en jeu</i></td></tr>
+      <tr><td>Type de lieu</td><td>…</td></tr>
+      <tr><td>Ressources</td><td>…</td></tr>
+      <tr><td>Premiers contacts</td><td>…</td></tr>
+      <tr><td>Premiers ennuis</td><td>…</td></tr></table>`, { v: 'card' }),
+    I(70, 470, 220, 160, 'placeholder', { frame: 'corners', r: -2 }),
+    T(310, 476, 190, 170, `Le jour où on aura un toit à nous, je veux une photo. — N.`, { v: 'pinned', r: 2 }),
+    T(52, 660, 456, 80, `<p style="font-size:13px">${prop('Page à remplir en jeu')} Aucun lieu n'est fixé à l'avance : complétez ce journal au fil du RP.</p>`)
+  ], { bg: 'aged' }));
+
+  /* ---------- LES FAILLES DES CHIENS ERRANTS ---------- */
+  const fl = (y, code, what, txt) => T(52, y, 456, 150, `<h3>${code} — ${what}</h3><p>${txt}</p>`, { v: 'card', st: { fs: 13.5 } });
+  push(P('Les failles des chiens errants', [
+    ...head('Sixième partie', 'Les failles des chiens errants'),
+    nar(180, 70, `<p>On les croyait taillés pour la route et la poudre. Chacun portait pourtant, sous l'assurance, une faiblesse que leur enfance avait creusée.</p>`),
+    fl(260, 'King', 'claustrophobie', "Enfermé sans issue, l'homme qui ne perd jamais son sang-froid suffoque et panique — souvenir de la réserve où son père l'avait verrouillé."),
+    fl(420, 'Wild', 'phobie du sang', "Elle parle de violence avec aplomb, mais la vue d'une grande quantité de sang lui donne nausées et vertiges, jusqu'à l'évanouissement."),
+    fl(580, 'Viper', 'phobie des lames', "Un couteau sur une table ne lui fait rien. Une lame pointée vers elle — vers son visage surtout — la fige et la ramène à sa cicatrice.")
   ], { lvl: 1 }));
+  push(P('', [
+    ...sub('Les failles — suite'),
+    fl(108, 'Money', "dépendance à l'alcool", "En manque, ses mains tremblent et son tir s'en ressent. Ivre, elle perd ses filtres : sentiments et secrets lui échappent."),
+    fl(268, 'Ace', "dépendance à l'alcool", "En manque, il devient irritable et imprécis. Ivre, il se vante, prend des risques et parle trop pour impressionner."),
+    T(52, 432, 456, 230, `<h3>Règles de jeu</h3><ul style="font-size:13.5px">
+      <li>Ces faiblesses sont <b>officielles</b> et se jouent avec leurs conséquences.</li>
+      <li>Elles ne disparaissent pas quand elles deviennent gênantes.</li>
+      <li>Elles ne rendent personne incapable d'agir en permanence.</li>
+      <li>Elles s'ajoutent aux caractères ; elles ne les remplacent pas.</li>
+      <li>Ni caricature ni comique systématique : ce sont des blessures.</li></ul>`),
+    T(52, 672, 456, 70, `<p style="font-size:13.5px"><span class="sc red">La famille —</span> <i>une ambition d'empire et une règle de loyauté : tôt ou tard, l'une mettra l'autre à l'épreuve.</i></p>`)
+  ]));
+  push(P('La bouteille des Blackwood', [
+    ...sub('La bouteille des Blackwood'),
+    T(52, 108, 456, 410, `<p class="dropcap">Scarlett et Silas partagent cette dépendance parce qu'ils ont partagé tout le reste. Ils ont découvert l'alcool au même endroit, dans les saloons où les traînait Victor Blackwood, entre les tables de poker et les verres qu'on laissait à portée des enfants. Leurs habitudes ont grandi avec eux, d'année en année.</p>
+      <p>Il arrive qu'ils s'encouragent l'un l'autre : un verre de plus pour ne pas perdre la face, une bouteille pour fêter un gain, une autre pour oublier une perte. Leur rivalité, qui les pousse à tout, les pousse aussi à boire.</p>
+      <p>L'alcool ne les change pourtant pas de la même façon. <b>Scarlett</b> devient bavarde, et laisse échapper des sentiments ou des secrets qu'elle cache d'ordinaire avec soin. <b>Silas</b> devient vantard et imprudent, et dévoile ce qu'il sait pour impressionner son auditoire.</p>`, { st: { fs: 14.5 } }),
+    T(52, 532, 456, 110, `<p style="font-size:13.5px">Cette faiblesse commune doit rester jouable sans devenir comique. Elle peut avoir de vraies conséquences : sur leurs relations, sur les autres Strays, et sur leurs affaires.</p>`, { v: 'archive' }),
+    A(380, 650, 120, 80, 'stain', { op: .8 })
+  ], { lvl: 2 }));
 
   /* ---------- PISTES D'INTRIGUE ---------- */
   push(P("Pistes d'intrigue", [
@@ -217,14 +259,15 @@
     ...sub('Événements marquants'),
     T(52, 116, 456, 600, `<table style="font-size:14px">
       <tr><td>Date</td><td><i>Événement — lieu — membres présents</i></td></tr>
-      <tr><td>____ 1890</td><td>Arrivée des Strays à New Austin.</td></tr>
-      ${'<tr><td>&nbsp;</td><td>&nbsp;</td></tr>'.repeat(10)}</table>`)
+      <tr><td>____ 1890</td><td>Derniers jours à Blackwater.</td></tr>
+      <tr><td>____ 1890</td><td>Départ pour Lemoyne.</td></tr>
+      <tr><td>____ 1890</td><td>Arrivée à Rhodes.</td></tr>
+      ${'<tr><td>&nbsp;</td><td>&nbsp;</td></tr>'.repeat(8)}</table>`)
   ], { lvl: 2 }));
   push(P('Pages pour les futurs événements', [
     ...sub('À écrire'),
     T(52, 116, 456, 600, `<p style="font-style:italic;color:#5a4330">Page laissée libre pour la suite de l'histoire.</p>`)
   ], { lvl: 2, bg: 'aged' }));
-  push(P('', [T(52, 60, 456, 680, `<p style="font-style:italic;color:#5a4330">&nbsp;</p>`)], { bg: 'aged' }));
   push(P('', [
     T(52, 60, 456, 680, `<p style="font-style:italic;color:#5a4330">&nbsp;</p>`),
     A(380, 620, 130, 130, 'stain', {})
@@ -237,7 +280,7 @@
     T(60, 320, 440, 120, `<p class="center" style="font-family:'IM Fell English',serif;font-size:25px;font-style:italic;line-height:1.3">« On est peut-être des chiens errants, mais aucun d'nous finira seul. »</p>`),
     A(180, 460, 200, 18, 'divider', {}),
     T(40, 494, 480, 50, `<p class="center" style="font-family:'Cinzel',serif;font-size:21px;letter-spacing:.08em;color:#7d2418;font-weight:700">NEVER LEAVE A STRAY BEHIND</p>`),
-    T(60, 556, 440, 40, `<p class="center" style="font-family:'Cinzel',serif;letter-spacing:.3em;font-size:13px">No home. No masters. Only us.</p>`),
+    T(60, 556, 440, 40, `<p class="center" style="font-family:'Cinzel',serif;letter-spacing:.3em;font-size:13px">No masters. No chains. No one left behind.</p>`),
     T(240, 640, 250, 60, `King · Wild · Viper · Money · Ace · …`, { v: 'hand', r: -3, st: { fs: 13 } })
   ], { lvl: 1 }));
 

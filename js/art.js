@@ -135,8 +135,7 @@
       <path d="M280,170 C250,200 236,250 250,300 C262,345 240,380 200,410" stroke-width="1.6"/>
       <path d="M14,250 C80,262 150,256 236,252" stroke-width="1.2" stroke-dasharray="7 4"/>
       <g stroke-width="1">${trees}</g><g stroke-width="1.1">${mts}</g>
-      <path d="M262,176 C220,200 170,214 150,240 C130,268 120,300 100,340" stroke="#7d2418" stroke-width="2" stroke-dasharray="1 6"/>
-      <path d="M96,330 l4,14 l6,-12" stroke="#7d2418" stroke-width="1.6"/>
+      
       <g transform="translate(430 360)" stroke-width="1"><circle r="22"/><path d="M0,-30 L5,0 L0,30 L-5,0Z M-30,0 L0,-5 L30,0 L0,5Z" fill="${f}" fill-opacity=".15"/></g>
       <path d="M30,392 h80 M30,388 v8 M70,388 v8 M110,388 v8" stroke-width="1"/>
       </g>
@@ -150,8 +149,8 @@
       <text x="150" y="226" font-size="15" letter-spacing="3" font-family="IM Fell English SC, serif">WEST ELIZABETH</text>
       <text x="300" y="250" font-size="12" letter-spacing="2">GREAT PLAINS</text>
       <text x="60" y="300" font-size="18" letter-spacing="4" font-family="IM Fell English SC, serif">NEW AUSTIN</text>
-      <text x="108" y="356" font-size="11" font-style="italic" fill="#7d2418">« là où l'on va »</text>
-      <text x="150" y="282" font-size="10" font-style="italic" fill="#7d2418" transform="rotate(-38 150 282)">route de 1890</text>
+      
+      
       <text x="30" y="384" font-size="10">Milles (approx.)</text>
       <text x="350" y="300" font-size="10" font-style="italic" transform="rotate(-62 350 300)">la rivière</text>
       <text x="22" y="244" font-size="9" font-style="italic" opacity=".8">limite approximative</text></g>`);

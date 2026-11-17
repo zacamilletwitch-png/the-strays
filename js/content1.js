@@ -4,12 +4,12 @@
    Ce contenu n'est que la version initiale : tout est modifiable dans
    l'application, et vos changements sont sauvegardés séparément.
    ===================================================================== */
-window.STRAYS = { pages: [], edition: 3 };
+window.STRAYS = { pages: [], edition: 4 };
 window.SB = (function () {
   const T = (x, y, w, h, html, o = {}) => ({ type: 'text', x, y, w, h, html, r: o.r || 0, v: o.v || '', st: o.st || {}, o: o.op || 1, g: o.g || '' });
   const I = (x, y, w, h, src, o = {}) => ({ type: 'image', x, y, w, h, src, r: o.r || 0, frame: o.frame || 'photo', sepia: o.sepia !== false, cap: o.cap || '', o: o.op || 1, g: o.g || '', col: o.col || '' });
   const A = (x, y, w, h, art, o = {}) => ({ type: 'art', x, y, w, h, art, col: o.col || 'ink', r: o.r || 0, o: o.op || 1, g: o.g || '' });
-  const TOC = (x, y, w, h, start, count) => ({ type: 'toc', x, y, w, h, start, count, r: 0, o: 1, st: { fs: 13.5 } });
+  const TOC = (x, y, w, h, start, count) => ({ type: 'toc', x, y, w, h, start, count, r: 0, o: 1, st: { fs: 12.5 } });
   const P = (title, els, o = {}) => ({ title: title || '', lvl: o.lvl || (title ? 2 : 0), bg: o.bg || 'ivory', noFolio: !!o.noFolio, els });
   /* En-tête de chapitre */
   const head = (kicker, title, y = 52, fs = (/<br>/.test(title) || title.replace(/<[^>]+>/g, '').length > 22) ? 27 : 31) => [
@@ -79,7 +79,7 @@ window.SB = (function () {
     T(60, 186, 440, 470, `<p class="dropcap" style="font-family:'IM Fell English',serif;font-size:16px">Je n'ai jamais chevauché avec les Strays. Je ne les ai pas jugés, ni poursuivis. J'ai seulement rassemblé ce qu'ils ont laissé derrière eux.</p>
       <p style="font-family:'IM Fell English',serif;font-size:16px">Ce registre réunit des récits recueillis à Blackwater, des lettres, quelques procès-verbaux sans importance, un carnet de comptes, et ces portraits que l'on fait tirer une fois dans sa vie, quand on a de quoi payer le photographe.</p>
       <p style="font-family:'IM Fell English',serif;font-size:16px">C'est l'histoire de cinq enfants dont personne ne voulait vraiment, et qui ont grandi ensemble pendant huit ans, sans toit fixe, dans les granges et les ruelles d'une ville qui préférait ne pas les voir.</p>
-      <p style="font-family:'IM Fell English',serif;font-size:16px">Le registre s'arrête en 1890, sur la route de New Austin. Ce qui viendra ensuite n'appartient encore à personne.</p>`),
+      <p style="font-family:'IM Fell English',serif;font-size:16px">Le registre s'arrête en 1890, à Blackwater, à la veille d'un départ pour Rhodes, dans l'État de Lemoyne. Ce qui viendra ensuite n'appartient encore à personne.</p>`),
     T(300, 662, 200, 40, `— L'archiviste`, { v: 'hand', r: -2, st: { fs: 14 } }),
     T(70, 668, 170, 44, `Cote B-1890-S`, { v: 'stamp', r: -6, st: { fs: 15 } })
   ], { lvl: 1 }));
@@ -98,12 +98,12 @@ window.SB = (function () {
   push(P('Présentation du projet', [
     ...head('Hors fiction — pour le staff', 'Présentation du projet'),
     T(52, 168, 456, 246, `<p class="dropcap">Les <span class="sc">Strays</span> sont nés dans les rues de Blackwater en 1882. En 1890, leurs cinq membres se connaissent depuis plus de cinq ans : ils ont grandi ensemble, sans foyer fixe, et forment déjà une véritable famille de hors-la-loi.</p>
-      <p>Ils arrivent à New Austin par choix, pour commencer à <b>bâtir un empire criminel</b>. Connus de quelques commerçants et du shérif de Blackwater, ils restent inconnus partout ailleurs. Leur ascension commence avec le jeu.</p>`),
+      <p>Au début du jeu, ils sont encore à Blackwater. Dans quelques jours, ils prendront la route de <b>Rhodes, en Lemoyne</b>, pour y trouver un foyer et commencer à <b>bâtir un empire criminel</b>. Connus du shérif de Blackwater, ils sont inconnus partout ailleurs.</p>`),
     T(52, 418, 456, 292, `<h3>Fiche du projet</h3><table>
       <tr><td>Serveur</td><td>Lawless Street V2 — Red Dead Redemption 2 RP</td></tr>
       <tr><td>Année</td><td>1890</td></tr>
       <tr><td>Origine</td><td>Blackwater, West Elizabeth (1882 – 1890)</td></tr>
-      <tr><td>Zone de jeu</td><td>New Austin</td></tr>
+      <tr><td>Zone de jeu</td><td>Blackwater (quelques jours), puis Rhodes, Lemoyne</td></tr>
       <tr><td>Chef</td><td>William « King » Mercer, respecté de tous</td></tr>
       <tr><td>Membres</td><td>King · Wild (Nell Whitmore) · Viper (Ruby Hargrove) · Money (Scarlett Blackwood) · Ace (Silas Blackwood)</td></tr>
       <tr><td>Règle absolue</td><td><b>Never leave a Stray behind.</b></td></tr>
@@ -117,9 +117,9 @@ window.SB = (function () {
     T(52, 168, 456, 450, `<p>Ce dossier sert à présenter le projet lors de la candidature whitelist, puis de référence commune aux joueurs.</p>
       <h3>Ce que nous voulons jouer</h3>
       <ul><li>Une <b>famille choisie</b> qui se connaît depuis des années, menée par un chef respecté de tous.</li>
-      <li>Une bande déjà surveillée à Blackwater, mais <b>inconnue à New Austin</b>, sans exploit passé.</li>
+      <li>Une bande déjà surveillée à Blackwater, mais <b>inconnue à Rhodes</b>, sans exploit passé ni quartier général.</li>
       <li>Une ambition d'empire criminel, abordée étape par étape, sans garantie de succès.</li>
-      <li>Des personnages faillibles, marqués par leur enfance.</li></ul>
+      <li>Des personnages faillibles, marqués par leur enfance, avec une <b>faiblesse réelle</b> chacun, jouée avec ses conséquences.</li></ul>
       <h3>Ce que nous nous interdisons</h3>
       <ul><li>Imposer des événements majeurs au lore du serveur.</li>
       <li>Faire intervenir un parent ou un ennemi du passé sans accord RP préalable.</li>
@@ -130,10 +130,10 @@ window.SB = (function () {
 
   /* ---------- CARTE ---------- */
   push(P('Carte de Blackwater et de la région', [
-    ...sub('Blackwater & les territoires du Sud'),
+    ...sub('Blackwater & West Elizabeth'),
     A(40, 116, 480, 403, 'map', {}),
-    T(52, 534, 456, 120, `<p style="font-size:14.5px">Relevé à main levée, retrouvé plié en quatre dans le registre. Les Strays connaissaient Blackwater par cœur : ses quais, ses granges vides et ses arrière-salles. Au-delà, le pays devenait rumeur. Quelqu'un a tracé au crayon rouge la route du Sud.</p>`),
-    T(300, 664, 210, 80, `Les distances sont fausses, mais l'envie est vraie. — W.`, { v: 'hand', r: -3, st: { fs: 12.5 } }),
+    T(52, 534, 456, 120, `<p style="font-size:14.5px">Relevé à main levée, retrouvé plié en quatre dans le registre. Les Strays connaissaient Blackwater par cœur : ses quais, ses granges vides et ses arrière-salles. Au-delà, le pays devenait rumeur. La route de l'Est, vers Lemoyne, figure plus loin dans ce registre.</p>`),
+    T(300, 664, 210, 80, `Tout ce qu'on connaît tient sur cette feuille. — W.`, { v: 'hand', r: -3, st: { fs: 12.5 } }),
     A(60, 664, 60, 70, 'thumb', { r: 20 })
   ], { lvl: 1 }));
 })();
