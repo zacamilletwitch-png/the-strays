@@ -33,7 +33,20 @@ C'est ce lien que vous partagez.
 
 ---
 
-## 2. Mettre le site à jour (à chaque modification, environ 1 minute)
+## Votre site
+
+**https://zacamilletwitch-png.github.io/the-strays/**
+Dépôt : https://github.com/zacamilletwitch-png/the-strays
+
+## 2. Mettre le site à jour — méthode rapide (2 clics)
+
+1. Modifiez le livre chez vous (mode **Édition**).
+2. Cliquez sur **Projet ▸ Publier sur le site (book.json)**. Le fichier est téléchargé dans **Téléchargements**.
+3. Dans le dossier **Documents ▸ The Strays**, double-cliquez sur **`publier.bat`**.
+   Il prend le `book.json` le plus récent de Téléchargements et l'envoie sur GitHub.
+4. Le site est à jour une à deux minutes plus tard.
+
+## 2 bis. Méthode manuelle (sans publier.bat)
 
 1. Ouvrez le livre chez vous, modifiez-le comme d'habitude (mode **Édition**).
 2. Cliquez sur **Projet ▸ Publier sur le site (book.json)**. Un fichier `book.json` est téléchargé.
