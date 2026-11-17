@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Strays — Registre 1890</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=Homemade+Apple&family=La+Belle+Aurore&family=Rye&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/book.css">
+<link rel="stylesheet" href="css/ui.css">
+</head>
+<body>
+<!-- Définitions SVG partagées (dégradés or, encre, filtres) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f3dc9a"/>
+      <stop offset=".35" stop-color="#c99a3e"/>
+      <stop offset=".55" stop-color="#8a6420"/>
+      <stop offset=".8" stop-color="#d8b062"/>
+      <stop offset="1" stop-color="#7a561a"/>
+    </linearGradient>
+    <linearGradient id="goldH" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#7a561a"/>
+      <stop offset=".5" stop-color="#e6c57a"/>
+      <stop offset="1" stop-color="#7a561a"/>
+    </linearGradient>
+    <radialGradient id="sepiaVig" cx=".5" cy=".45" r=".65">
+      <stop offset="0" stop-color="#d9c29a"/>
+      <stop offset=".6" stop-color="#b08d5c"/>
+      <stop offset="1" stop-color="#4a3420"/>
+    </radialGradient>
+    <radialGradient id="waxGrad" cx=".4" cy=".35" r=".7">
+      <stop offset="0" stop-color="#b3312a"/>
+      <stop offset=".6" stop-color="#7d1a16"/>
+      <stop offset="1" stop-color="#4a0d0b"/>
+    </radialGradient>
+    <filter id="roughInk" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"/>
+      <feDisplacementMap in="SourceGraphic" scale="1.6"/>
+    </filter>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="7" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.3  0 0 0 0 0.22  0 0 0 0 0.12  0 0 0 0.55 0"/>
+      <feComposite in2="SourceGraphic" operator="in"/>
+    </filter>
+  </defs>
+</svg>
+
+<div id="app" class="mode-read">
+
+  <!-- ===== BARRE D'ÉDITION ===== -->
+  <header id="toolbar" aria-label="Outils d'édition">
+    <div class="tb-row">
+      <div class="tb-group">
+        <span class="tb-label">Ajouter</span>
+        <button data-add="title" title="Ajouter un titre">Titre</button>
+        <button data-add="para" title="Ajouter un paragraphe">Paragraphe</button>
+        <button data-add="note" title="Annotation manuscrite">Note</button>
+        <button data-add="news" title="Coupure de journal">Journal</button>
+        <button data-add="letter" title="Lettre manuscrite">Lettre</button>
+        <button data-add="poster" title="Affiche de recherche">Affiche</button>
+        <button data-add="archive" title="Document d'archive / témoignage">Archive</button>
+        <button data-add="member" title="Nouvelle carte de membre (portrait, nom de code, signature)">Carte membre</button>
+        <button data-add="image" title="Importer une photographie">Photo…</button>
+        <button data-add="deco" title="Ornements et objets">Ornement ▾</button>
+      </div>
+      <div class="tb-group">
+        <span class="tb-label">Page</span>
+        <button data-page="add" title="Nouvelle page après celle-ci">+ Page</button>
+        <button data-page="dup" title="Dupliquer la page">Dupliquer</button>
+        <button data-page="member" title="Ajouter les trois pages d’un nouveau membre (portrait, histoire, caractère)">+ Membre</button>
+        <button data-page="left" title="Déplacer vers l'avant">◂</button>
+        <button data-page="right" title="Déplacer vers l'arrière">▸</button>
+        <button data-page="del" title="Supprimer la page">Supprimer</button>
+        <select id="pageTarget" title="Page concernée"></select>
+        <select id="pageBg" title="Fond de page">
+          <option value="ivory">Ivoire</option>
+          <option value="aged">Papier jauni</option>
+          <option value="parch">Parchemin sombre</option>
+          <option value="lined">Papier ligné</option>
+          <option value="endpaper">Garde marbrée</option>
+          <option value="leather">Cuir</option>
+          <option value="board">Carton brut</option>
+          <option value="night">Nuit (pleine image)</option>
+          <option value="custom">Image personnelle…</option>
+        </select>
+        <input id="pageTitle" placeholder="Titre au sommaire" title="Titre affiché dans le sommaire (vide = absent)">
+        <select id="pageLvl" title="Niveau dans le sommaire">
+          <option value="1">Chapitre</option>
+          <option value="2">Sous-partie</option>
+        </select>
+      </div>
+      <div class="tb-group tb-right">
+        <span id="saveState" class="save-state">—</span>
+        <button id="btnUndo" title="Annuler (Ctrl+Z)">↶</button>
+        <button id="btnRedo" title="Rétablir (Ctrl+Y)">↷</button>
+        <button id="btnProject" title="Projet : export, import, PDF">Projet ▾</button>
+        <button id="btnRead" class="accent" title="Revenir au mode lecture">Mode lecture</button>
+      </div>
+    </div>
+    <div class="tb-row tb-sel" id="selBar">
+      <span class="tb-label" id="selLabel">Aucun élément sélectionné</span>
+      <div class="tb-group sel-text">
+        <select id="fFamily" title="Police">
+          <option value="">Police…</option>
+          <option value="'EB Garamond', serif">Garamond (récit)</option>
+          <option value="'IM Fell English', serif">Fell English</option>
+          <option value="'IM Fell English SC', serif">Fell Petites Caps</option>
+          <option value="'Old Standard TT', serif">Old Standard (journal)</option>
+          <option value="'Cinzel', serif">Cinzel (gravure)</option>
+          <option value="'Rye', serif">Rye (affiche)</option>
+          <option value="'Homemade Apple', cursive">Manuscrite I</option>
+          <option value="'La Belle Aurore', cursive">Manuscrite II</option>
+        </select>
+        <input id="fSize" type="number" min="6" max="160" step="1" title="Taille (px)">
+        <input id="fColor" type="color" value="#2b1d12" title="Couleur (sélection ou bloc)">
+        <button data-cmd="bold" title="Gras"><b>G</b></button>
+        <button data-cmd="italic" title="Italique"><i>I</i></button>
+        <button data-cmd="underline" title="Souligné"><u>S</u></button>
+        <select id="fBlock" title="Type de bloc">
+          <option value="">Bloc…</option>
+          <option value="p">Paragraphe</option>
+          <option value="h2">Titre</option>
+          <option value="h3">Sous-titre</option>
+          <option value="blockquote">Citation</option>
+        </select>
+        <button data-align="left" title="Aligner à gauche">⯇</button>
+        <button data-align="center" title="Centrer">≡</button>
+        <button data-align="right" title="Aligner à droite">⯈</button>
+        <button data-align="justify" title="Justifier">☰</button>
+        <select id="fVariant" title="Style du bloc">
+          <option value="">Style : aucun</option>
+          <option value="gold">Or gravé</option>
+          <option value="deboss">Gravé dans le cuir</option>
+          <option value="narrator">Voix de l'archiviste</option>
+          <option value="archive">Document d'archive</option>
+          <option value="oldcard">Carte de membre</option>
+          <option value="ink">Encre</option>
+          <option value="hand">Manuscrit</option>
+          <option value="news">Coupure de journal</option>
+          <option value="letter">Lettre</option>
+          <option value="pinned">Note épinglée</option>
+          <option value="poster">Affiche</option>
+          <option value="stamp">Tampon</option>
+          <option value="card">Fiche</option>
+          <option value="ledger">Carnet de comptes</option>
+          <option value="light">Texte clair sur image</option>
+        </select>
+      </div>
+      <div class="tb-group sel-img">
+        <button id="btnReplace" title="Remplacer par votre image">Remplacer…</button>
+        <select id="fFrame" title="Montage photo">
+          <option value="photo">Tirage sépia</option>
+          <option value="corners">Coins collés</option>
+          <option value="cabinet">Carte-cabinet</option>
+          <option value="oval">Médaillon ovale</option>
+          <option value="plain">Sans cadre</option>
+        </select>
+        <label class="chk"><input type="checkbox" id="fSepia"> Sépia</label>
+      </div>
+      <div class="tb-group sel-any">
+        <label title="Rotation">↻ <input id="fRot" type="number" step="1" style="width:52px"></label>
+        <label title="Opacité">◐ <input id="fOp" type="range" min="10" max="100"></label>
+        <button id="btnFront" title="Premier plan">Avant</button>
+        <button id="btnBack" title="Arrière-plan">Arrière</button>
+        <button id="btnUngroup" title="Les cartes de membre se déplacent d'un bloc ; ce bouton détache l'élément de son groupe">Dissocier</button>
+        <button id="btnDupEl" title="Dupliquer l'élément">Dupliquer</button>
+        <button id="btnDelEl" class="danger" title="Supprimer l'élément (Suppr)">Supprimer</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== PANNEAU DES PAGES (édition) ===== -->
+  <aside id="pagePanel" aria-label="Pages">
+    <div class="pp-head">Pages <small>glisser pour réorganiser</small></div>
+    <ol id="pageList"></ol>
+  </aside>
+
+  <!-- ===== SCÈNE ===== -->
+  <main id="stage">
+    <div id="bookWrap">
+      <div id="book">
+        <div class="leaf-stack left"></div>
+        <div class="leaf-stack right"></div>
+        <div class="slot left" id="slotL"></div>
+        <div class="slot right" id="slotR"></div>
+        <div class="gutter"></div>
+      </div>
+    </div>
+    <div class="corner corner-l" id="cornerL" title="Page précédente"></div>
+    <div class="corner corner-r" id="cornerR" title="Page suivante"></div>
+  </main>
+
+  <!-- ===== BARRE DE LECTURE ===== -->
+  <nav id="readBar" aria-label="Navigation">
+    <button id="navPrev" title="Page précédente (←)">❮</button>
+    <button id="btnToc" title="Sommaire">Sommaire</button>
+    <span class="rb-page">p. <input id="pageInput" type="number" min="0"> / <span id="pageCount">0</span></span>
+    <button id="btnFull" title="Plein écran">Plein écran</button>
+    <button id="btnEdit" title="Passer en mode édition">Édition</button>
+    <button id="navNext" title="Page suivante (→)">❯</button>
+  </nav>
+
+  <!-- ===== SOMMAIRE (tiroir) ===== -->
+  <div id="tocDrawer" class="drawer" hidden>
+    <div class="drawer-inner">
+      <div class="drawer-title">Sommaire</div>
+      <ol id="tocList"></ol>
+      <button class="drawer-close" data-close>Fermer</button>
+    </div>
+  </div>
+
+  <!-- ===== MENUS ===== -->
+  <div id="decoMenu" class="popmenu" hidden></div>
+  <div id="projectMenu" class="popmenu" hidden>
+    <button data-proj="export">Exporter le projet (.json)</button>
+    <button data-proj="import">Importer un projet…</button>
+    <button data-proj="pdf">Exporter en PDF (impression)</button>
+    <button data-proj="publish">Publier sur le site (book.json)</button>
+    <hr>
+    <button data-proj="restore">Restaurer la version précédente</button>
+    <button data-proj="reset" class="danger">Réinitialiser le livre d'origine</button>
+  </div>
+
+  <div id="toast" role="status"></div>
+  <input type="file" id="fileImage" accept="image/*" hidden>
+  <input type="file" id="fileBg" accept="image/*" hidden>
+  <input type="file" id="fileProject" accept=".json,application/json" hidden>
+</div>
+
+<!-- Zone d'impression PDF -->
+<div id="printRoot" aria-hidden="true"></div>
+
+<script src="js/art.js"></script>
+<script src="js/art2.js"></script>
+<script src="js/art3.js"></script>
+<script src="js/content1.js"></script>
+<script src="js/content2.js"></script>
+<script src="js/content3.js"></script>
+<script src="js/content4.js"></script>
+<script src="js/content5.js"></script>
+<script src="js/app.js"></script>
+<script src="js/editor.js"></script>
+</body>
+</html>
