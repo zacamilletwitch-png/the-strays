@@ -110,12 +110,12 @@
     if (e.type === 'art') return `<div class="el-c">${window.ART.render(e.art, e.col)}</div>`;
     if (e.type === 'toc') {
       const items = tocEntries().slice(e.start || 0, (e.start || 0) + (e.count || 99));
-      return `<div class="el-c" style="${styleOf(e.st)}"><ul class="toc-list">${items.map(x => `<li class="lvl${x.lvl}" data-goto="${x.i}"><span class="t">${esc(x.t)}</span><span class="d"></span><span class="n">${x.i}</span></li>`).join('')}</ul></div>`;
+      return `<div class="el-c" style="${styleOf(e.st)}"><ul class="toc-list">${items.map(x => `<li class="lvl${x.lvl}" data-goto="${x.i}"><span class="t">${esc(x.t)}</span><span class="d"></span><span class="n">${x.i + 1}</span></li>`).join('')}</ul></div>`;
     }
     if (e.type === 'image') {
       let inner;
-      if (e.src && e.src.startsWith('art:')) inner = window.ART.render(e.src.slice(4), e.col) + '<div class="ph-hint">Illustration remplaçable</div>';
-      else if (e.src && e.src.startsWith('portrait:')) inner = window.ART.portrait(e.src.slice(9)) + '<div class="ph-hint">Portrait à remplacer</div>';
+      if (e.src && e.src.startsWith('art:')) inner = window.ART.render(e.src.slice(4), e.col).replace('xMidYMid meet', 'xMidYMid slice') + '<div class="ph-hint">Illustration remplaçable</div>';
+      else if (e.src && e.src.startsWith('portrait:')) inner = window.ART.portrait(e.src.slice(9)).replace('xMidYMid meet', 'xMidYMid slice') + '<div class="ph-hint">Portrait à remplacer</div>';
       else if (!e.src || e.src === 'placeholder') inner = placeholderSvg() + '<div class="ph-hint">Photo à importer</div>';
       else inner = `<img src="${e.src}" alt="" draggable="false">`;
       const corners = e.frame === 'corners' ? '<i class="pc tl"></i><i class="pc tr"></i><i class="pc bl"></i><i class="pc br"></i>' : '';
@@ -141,7 +141,7 @@
     if (p.bg === 'custom' && p.bgImg) d.style.backgroundImage = `url(${p.bgImg})`;
     p.els.forEach(e => d.appendChild(renderEl(e, edit)));
     if (idx > 0 && p.bg !== 'leather' && p.bg !== 'endpaper' && !p.noFolio) {
-      const f = document.createElement('div'); f.className = 'folio'; f.textContent = idx; d.appendChild(f);
+      const f = document.createElement('div'); f.className = 'folio'; f.textContent = idx + 1; d.appendChild(f);
     }
     return d;
   }
@@ -151,18 +151,23 @@
      Planches (doubles pages)
      ------------------------------------------------------------------ */
   const N = () => S.book.pages.length;
-  function spreadCount() { return S.single ? N() : 1 + Math.ceil((N() - 1) / 2); }
+  /* Comme un vrai livre : couverture seule, puis contre-plat + page 2 (index 1),
+     puis doubles pages (index pair à gauche, impair à droite). */
+  const INSIDE = -1;
+  function spreadCount() { return S.single ? N() : (N() < 2 ? 1 : 2 + Math.ceil((N() - 2) / 2)); }
   function pagesOf(s) {
     if (S.single) return [null, s];
     if (s === 0) return [null, 0];
-    const a = 2 * s - 1, b = 2 * s;
+    if (s === 1) return [INSIDE, 1 < N() ? 1 : null];
+    const a = 2 * s - 2, b = 2 * s - 1;
     return [a < N() ? a : null, b < N() ? b : null];
   }
-  function spreadOf(i) { return S.single ? i : Math.floor((i + 1) / 2); }
+  function spreadOf(i) { return S.single ? i : (i < 2 ? i : Math.floor(i / 2) + 1); }
+  function insidePage() { const d = document.createElement('div'); d.className = 'page bg-endpaper inside-cover'; return d; }
   function clampSpread() { S.spread = Math.max(0, Math.min(S.spread, spreadCount() - 1)); }
   function fill(slot, i) {
     slot.innerHTML = '';
-    slot.appendChild(i == null ? emptyPage() : renderPage(S.book.pages[i], i, S.mode === 'edit'));
+    slot.appendChild(i == null ? emptyPage() : i === INSIDE ? insidePage() : renderPage(S.book.pages[i], i, S.mode === 'edit'));
   }
   function setClosed(l, r) {
     book.classList.toggle('closed-front', !S.single && l == null && r != null);
@@ -175,8 +180,9 @@
     $('#cornerL').classList.toggle('off', S.spread === 0);
     $('#cornerR').classList.toggle('off', S.spread >= spreadCount() - 1);
     const shown = r ?? l ?? 0;
-    $('#pageInput').value = l != null && r == null ? l : (S.single ? r : (l ?? r));
-    $('#pageCount').textContent = N() - 1;
+    const L = l != null && l >= 0 ? l : null;
+    $('#pageInput').value = 1 + (L != null && r == null ? L : (S.single ? r : (L ?? r)));
+    $('#pageCount').textContent = N();
     try { localStorage.setItem('strays-spread', String(shown)); } catch (e) {}
     document.dispatchEvent(new CustomEvent('spread-rendered'));
   }
@@ -195,7 +201,7 @@
     const mk = (i, cls, side) => {
       const f = document.createElement('div'); f.className = 'face ' + cls;
       const sl = document.createElement('div'); sl.className = 'slot ' + side; sl.style.left = '0';
-      sl.appendChild(i == null ? emptyPage() : renderPage(S.book.pages[i], i, false));
+      sl.appendChild(i == null ? emptyPage() : i === INSIDE ? insidePage() : renderPage(S.book.pages[i], i, false));
       const sh = document.createElement('div'); sh.className = 'shade';
       f.append(sl, sh); return f;
     };
@@ -263,7 +269,7 @@
      Sommaire tiroir, listes, divers
      ------------------------------------------------------------------ */
   function refreshLists() {
-    $('#tocList').innerHTML = tocEntries().map(x => `<li class="lvl${x.lvl}" data-goto="${x.i}"><span>${esc(x.t)}</span><span class="n">${x.i}</span></li>`).join('');
+    $('#tocList').innerHTML = tocEntries().map(x => `<li class="lvl${x.lvl}" data-goto="${x.i}"><span>${esc(x.t)}</span><span class="n">${x.i + 1}</span></li>`).join('');
     document.dispatchEvent(new CustomEvent('pages-changed'));
   }
   let toastT;
@@ -293,7 +299,7 @@
   $('#navNext').onclick = () => flip(1);
   $('#cornerL').onclick = () => flip(-1);
   $('#cornerR').onclick = () => flip(1);
-  $('#pageInput').onchange = (e) => goToPage(+e.target.value);
+  $('#pageInput').onchange = (e) => goToPage(+e.target.value - 1);
   $('#btnToc').onclick = () => { $('#tocDrawer').hidden = false; };
   $('#tocDrawer').addEventListener('click', (e) => {
     const li = e.target.closest('[data-goto]');

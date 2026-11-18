@@ -26,7 +26,7 @@ Flèches ← →, clic sur les coins des pages, glissement au doigt sur mobile, 
 - **Projet ▸ Réinitialiser** : revient au livre d'origine.
 
 ## Fichiers
-`index.html` · `css/` (styles) · `js/art.js` (illustrations vectorielles) · `js/content1-4.js` (texte d'origine) · `js/app.js` (moteur) · `js/editor.js` (édition) · `serve.js` (petit serveur local facultatif).
+`index.html` · `css/` (styles) · `js/art*.js` (illustrations vectorielles) · `js/book.js` (texte d'origine, 20 pages) · `js/app.js` (moteur) · `js/editor.js` (édition) · `serve.js` (petit serveur local facultatif).
 
 ## 2e édition — nouveautés
 - Couverture en cuir noir, titre gravé à froid, chien noir au collier de fer brisé ; emblème sans nombre de symboles.
@@ -47,3 +47,10 @@ Flèches ← →, clic sur les coins des pages, glissement au doigt sur mobile, 
 - Destination : **Rhodes, Lemoyne**. Au début du RP, les Strays sont encore à Blackwater pour quelques jours ; le quartier général n'est pas choisi.
 - Nouvelles pages : Les derniers jours à Blackwater, conclusion « Vers Lemoyne », double page « THE STRAYS — RHODES, 1890 », étapes « De Blackwater à l'empire », double page « De Blackwater à Rhodes — 1890 » (carte + journal d'installation à remplir), double page « Les failles des chiens errants », « La bouteille des Blackwood ».
 - Chaque fiche de membre a une page « Sa faille » : faiblesse officielle, origine, manifestations, conséquences en jeu.
+
+## 5e édition — dossier de présentation de 20 pages
+- Le livre passe de 88 à **20 pages** (couverture comprise), pensé pour une lecture de 10 à 15 minutes par le staff de Lawless Street V2. Les anciennes pages sont réellement supprimées des données.
+- Pagination de vrai livre : la couverture seule, puis la page 2 face au contre-plat, puis les doubles pages 3-4, 5-6 … 19-20. Les numéros affichés comptent la couverture comme page 1.
+- Structure : couverture · présentation du groupe · histoire 1882-1890 (double page avec chronologie et carte vers Rhodes) · une double page par Stray (portrait, signalement, carte de code, présentation, histoire familiale / trois traits, faiblesse et son origine, objectif, rôle, place parmi les Strays) · fonctionnement et valeurs · notre projet et ce que nous voulons apporter · accompagnement souhaité et conclusion.
+- **+ Membre** ajoute désormais une double page de fiche au même format, placée pour former une vraie double page.
+- Au premier chargement, la version précédente (4e édition) reste récupérable : Projet ▸ Restaurer la version précédente.

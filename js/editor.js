@@ -14,7 +14,7 @@
   const elNode = (id) => book.querySelector(`.slot .el[data-id="${id}"]`);
   const pageEls = (i) => S.book.pages[i].els;
   const maxZ = (i) => pageEls(i).reduce((m, e) => Math.max(m, e.z || 1), 0);
-  function visiblePages() { const [l, r] = A.pagesOf(S.spread); return [l, r].filter(x => x != null); }
+  function visiblePages() { const [l, r] = A.pagesOf(S.spread); return [l, r].filter(x => x != null && x >= 0); }
   function syncTarget() {
     const v = visiblePages();
     if (!v.includes(targetPage)) targetPage = v[v.length - 1] ?? 0;
@@ -314,7 +314,7 @@
   /* ---------------- Pages ---------------- */
   function fillPageTarget() {
     const sel = $('#pageTarget'); if (!S.book) return;
-    sel.innerHTML = S.book.pages.map((p, i) => `<option value="${i}">p. ${i}${p.title ? ' — ' + p.title.slice(0, 22) : ''}</option>`).join('');
+    sel.innerHTML = S.book.pages.map((p, i) => `<option value="${i}">p. ${i + 1}${p.title ? ' — ' + p.title.slice(0, 22) : ''}</option>`).join('');
     sel.value = targetPage;
     const p = S.book.pages[targetPage]; if (!p) return;
     $('#pageBg').value = p.bg || 'ivory';
@@ -356,27 +356,23 @@
   document.querySelectorAll('[data-page]').forEach(b => b.onclick = () => {
     stopEditing();
     const i = targetPage, ps = S.book.pages, k = b.dataset.page;
-    if (k === 'add') { A.commit(); ps.splice(i + 1, 0, newPage()); targetPage = i + 1; S.spread = A.spreadOf(i + 1); A.changed(); A.toast('Page ' + (i + 1) + ' ajoutée'); }
+    if (k === 'add') { A.commit(); ps.splice(i + 1, 0, newPage()); targetPage = i + 1; S.spread = A.spreadOf(i + 1); A.changed(); A.toast('Page ' + (i + 2) + ' ajoutée'); }
     if (k === 'member') {
       A.commit();
-      const id = () => A.uid();
-      const t = (x, y, w, h, html, o) => Object.assign({ id: id(), type: 'text', x, y, w, h, html, z: 1, r: 0, o: 1, st: {}, v: '' }, o || {});
-      const head = (k2, t2) => [t(52, 52, 456, 22, '<p class="center sc red" style="letter-spacing:.25em;font-size:13px">' + k2 + '</p>'), t(40, 76, 480, 62, '<h1 class="center" style="font-size:27px">' + t2 + '</h1>'), { id: id(), type: 'art', x: 150, y: 140, w: 260, h: 20, art: 'divider', col: 'ink', z: 2, r: 0, o: 1, st: {} }];
-      const sub = (t2) => [t(52, 52, 456, 40, '<h2 class="center">' + t2 + '</h2>'), { id: id(), type: 'art', x: 180, y: 92, w: 200, h: 16, art: 'divider', col: 'ink', z: 2, r: 0, o: 1, st: {} }];
-      const p1 = { id: id(), title: 'Prénom « CODE » Nom', lvl: 2, bg: 'ivory', els: [
-        ...head('Rôle · CODE', 'Prénom « CODE » Nom'),
-        { id: id(), type: 'image', x: 52, y: 182, w: 236, h: 330, src: 'placeholder', frame: 'cabinet', sepia: true, cap: 'NOM — 1890', z: 3, r: -1, o: 1, st: {} },
-        t(304, 186, 204, 340, '<h3>Signalement</h3><table><tr><td>Nom de code</td><td><b>CODE</b></td></tr><tr><td>Âge</td><td>…</td></tr><tr><td>Origine</td><td>…</td></tr><tr><td>Chez les Strays</td><td>Depuis …</td></tr><tr><td>Rôle</td><td>…</td></tr><tr><td>Traits</td><td>…</td></tr></table>', { v: 'card', st: { fs: 13 } }),
-        t(52, 534, 456, 70, '<blockquote class="center" style="font-size:17px;margin:0">« Sa réplique. »</blockquote>'),
-        t(52, 616, 456, 124, '<p>Présentation en quelques lignes.</p>') ] };
-      const p2 = { id: id(), title: '', lvl: 2, bg: 'ivory', els: [ ...sub('CODE — Histoire'), t(52, 112, 456, 620, '<p class="dropcap">Son enfance, sa blessure, et le soir où il ou elle a prêté serment autour du feu…</p>') ] };
-      const p3 = { id: id(), title: '', lvl: 2, bg: 'ivory', els: [ ...sub('CODE — Caractère & ambitions'),
-        t(52, 112, 456, 130, '<h3>Personnalité</h3><p>…</p>'), t(52, 250, 456, 130, '<h3>Objectif</h3><p>…</p>'),
-        t(52, 390, 220, 200, '<h3>Faiblesses</h3><ul><li>…</li></ul>', { v: 'card' }), t(288, 390, 220, 200, '<h3>Contradictions</h3><ul><li>…</li></ul>', { v: 'card' }),
-        t(52, 616, 456, 110, '<p><span class="sc red">Ce qui le lie aux Strays —</span> <i>…</i></p>') ] };
-      [p1, p2, p3].forEach(p => p.els.forEach((e, n) => e.z = n + 1));
-      ps.splice(i + 1, 0, p1, p2, p3); targetPage = i + 1; S.spread = A.spreadOf(i + 1); A.changed();
-      A.toast('Trois pages de fiche ajoutées après la page ' + i + ' — pensez à « Carte membre » et au registre de la famille');
+      const tpl = window.SB.member({
+        title: 'CODE — Prénom Nom', kicker: 'Rôle · CODE', name: 'Prénom « Surnom » Nom', code: 'CODE', pip: '★', sig: 'Signature',
+        portrait: 'placeholder', cap: 'NOM — 1890', age: '… ans (né·e en …)', origin: '…', joined: '…',
+        quote: '« Sa réplique. »', intro: 'Présentation en quelques lignes.', family: 'Histoire familiale résumée.',
+        traits: [['Trait 1', '…'], ['Trait 2', '…'], ['Trait 3', '…']],
+        weak: '…', weakOrigin: 'Origine de la faiblesse.', weakPlay: 'situations où elle se joue.',
+        goal: 'Objectif personnel.', role: 'Rôle dans le groupe.', rel: 'Relation avec Billy et les autres Strays.'
+      });
+      const pages = JSON.parse(JSON.stringify(tpl));
+      pages.forEach(p => { p.id = A.uid(); p.els.forEach((e, n) => { e.id = A.uid(); e.z = n + 1; }); });
+      /* la fiche doit former une vraie double page : page gauche sur un index pair */
+      let at = i + 1; if (at % 2 === 1) at++; at = Math.min(at, ps.length);
+      ps.splice(at, 0, ...pages); targetPage = at; S.spread = A.spreadOf(at); A.changed();
+      A.toast('Double page de fiche ajoutée (pages ' + (at + 1) + '–' + (at + 2) + ')');
     }
     if (k === 'dup') { A.commit(); ps.splice(i + 1, 0, cloneWithIds(ps[i])); targetPage = i + 1; S.spread = A.spreadOf(i + 1); A.changed(); A.toast('Page dupliquée'); }
     if (k === 'left') movePage(i, i - 1);
