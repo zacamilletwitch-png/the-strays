@@ -71,14 +71,20 @@
     const e = f.el;
     selBar.classList.add('has-any');
     const names = { text: 'Texte', image: 'Photographie', art: 'Ornement', toc: 'Sommaire automatique' };
-    $('#selLabel').textContent = names[e.type] + ' · p. ' + f.i;
+    $('#selLabel').textContent = names[e.type] + ' · p. ' + (f.i + 1);
     if (e.type === 'text' || e.type === 'toc') {
       selBar.classList.add('has-text');
       $('#fFamily').value = e.st.ff || ''; $('#fSize').value = e.st.fs || '';
       $('#fVariant').value = e.v || ''; $('#fBlock').value = '';
     }
     if (e.type === 'art') { selBar.classList.add('has-text', 'has-img'); $('#fVariant').value = ''; }
-    if (e.type === 'image') { selBar.classList.add('has-img'); $('#fFrame').value = e.frame || 'photo'; $('#fSepia').checked = !!e.sepia; }
+    if (e.type === 'image') {
+      selBar.classList.add('has-img'); $('#fFrame').value = e.frame || 'photo';
+      $('#fTone').value = e.tone || (e.sepia === false ? 'color' : 'sepia');
+      $('#fZoom').value = Math.round((e.fz || 1) * 100); $('#fFx').value = e.fx ?? 50; $('#fFy').value = e.fy ?? 50;
+      if (document.activeElement !== $('#fCap')) $('#fCap').value = e.cap || '';
+      if (document.activeElement !== $('#fDate')) $('#fDate').value = e.date || '';
+    }
     $('#fRot').value = Math.round(e.r || 0); $('#fOp').value = Math.round((e.o ?? 1) * 100);
     $('#btnUngroup').disabled = !e.g;
   }
@@ -221,7 +227,20 @@
   $('#fOp').oninput = (ev) => { const f = cur(); if (!f) return; const n = elNode(f.el.id); if (n) n.style.opacity = ev.target.value / 100; };
   $('#fOp').onchange = (ev) => mutate(e => { e.o = ev.target.value / 100; }, false);
   $('#fFrame').onchange = (ev) => mutate(e => { e.frame = ev.target.value; });
-  $('#fSepia').onchange = (ev) => mutate(e => { e.sepia = ev.target.checked; });
+  $('#fTone').onchange = (ev) => mutate(e => { e.tone = ev.target.value; e.sepia = e.tone === 'sepia'; });
+  /* Recadrage en direct (aperçu), enregistré au relâchement */
+  const cropPreview = () => {
+    const f = cur(); if (!f || f.el.type !== 'image') return;
+    const n = elNode(f.el.id); const m = n && n.querySelector('.crop > img, .crop > svg'); if (!m) return;
+    const z = $('#fZoom').value / 100, x = $('#fFx').value, y = $('#fFy').value;
+    m.style.objectPosition = x + '% ' + y + '%'; m.style.transform = 'scale(' + z + ')'; m.style.transformOrigin = x + '% ' + y + '%';
+  };
+  ['fZoom', 'fFx', 'fFy'].forEach(id => {
+    $('#' + id).oninput = cropPreview;
+    $('#' + id).onchange = () => mutate(e => { e.fz = $('#fZoom').value / 100; e.fx = +$('#fFx').value; e.fy = +$('#fFy').value; }, false);
+  });
+  $('#fCap').onchange = (ev) => mutate(e => { e.cap = ev.target.value.trim(); });
+  $('#fDate').onchange = (ev) => mutate(e => { e.date = ev.target.value.trim(); });
   $('#btnFront').onclick = () => mutate((e, f) => { e.z = maxZ(f.i) + 1; });
   $('#btnBack').onclick = () => mutate((e, f) => { pageEls(f.i).forEach(x => x.z = (x.z || 1) + 1); e.z = 1; });
   $('#btnUngroup').onclick = () => { const f = cur(); if (!f || !f.el.g) return; mutate(e => { e.g = ''; }); A.toast('Élément détaché de son groupe'); };
@@ -242,7 +261,7 @@
   async function replaceImage() {
     const f = cur(); if (!f || (f.el.type !== 'image' && f.el.type !== 'art')) return;
     const file = await pickFile($('#fileImage')); if (!file) return;
-    try { const im = await readImage(file); mutate(e => { if (e.type === 'art') { e.type = 'image'; e.frame = 'plain'; e.sepia = false; delete e.art; } e.src = im.src; }); A.toast('Image remplacée'); }
+    try { const im = await readImage(file); mutate(e => { if (e.type === 'art') { e.type = 'image'; e.frame = 'plain'; e.sepia = false; delete e.art; } e.src = im.src; delete e.fx; delete e.fy; delete e.fz; }); A.toast('Image remplacée — réglez le cadrage avec ⤢ ↔ ↕ si besoin'); }
     catch (err) { A.toast('Impossible de lire cette image.'); }
   }
 
@@ -253,7 +272,7 @@
     A.commit();
     e.id = A.uid(); e.z = maxZ(i) + 1; e.r = e.r || 0; e.o = 1; e.st = e.st || {};
     S.book.pages[i].els.push(e); A.changed(); select(e.id);
-    A.toast('Élément ajouté en page ' + i + (e.type === 'text' ? ' — double-cliquez pour écrire' : ''));
+    A.toast('Élément ajouté en page ' + (i + 1) + (e.type === 'text' ? ' — double-cliquez pour écrire' : ''));
   }
   const presets = {
     title: () => ({ type: 'text', x: 60, y: 70, w: 440, h: 60, html: '<h2 class="center">Nouveau titre</h2>', v: onLeather() ? 'gold' : '' }),
@@ -280,7 +299,7 @@
       try {
         const im = await readImage(file);
         const w = 280, h = Math.round(w * im.h / im.w);
-        addEl({ type: 'image', x: 140, y: Math.max(40, 400 - h / 2), w, h: Math.min(h, 700), src: im.src, frame: 'photo', sepia: true, cap: '' });
+        addEl({ type: 'image', x: 140, y: Math.max(40, 400 - h / 2), w, h: Math.min(h, 700), src: im.src, frame: 'corners', sepia: true, tone: 'sepia', cap: '', date: '' });
       } catch (err) { A.toast('Impossible de lire cette image.'); }
     }
     if (k === 'deco') toggleMenu($('#decoMenu'), b);
@@ -307,7 +326,7 @@
     menu.style.left = Math.max(6, Math.min(r.left, innerWidth - menu.offsetWidth - 8)) + 'px';
   }
   document.addEventListener('pointerdown', (ev) => {
-    if (!ev.target.closest('.popmenu') && !ev.target.closest('[data-add="deco"]') && !ev.target.closest('#btnProject'))
+    if (!ev.target.closest('.popmenu') && !ev.target.closest('[data-add="deco"]') && !ev.target.closest('#btnProject') && !ev.target.closest('#btnAddPage'))
       document.querySelectorAll('.popmenu').forEach(p => p.hidden = true);
   });
 
@@ -357,40 +376,45 @@
     stopEditing();
     const i = targetPage, ps = S.book.pages, k = b.dataset.page;
     if (k === 'add') { A.commit(); ps.splice(i + 1, 0, newPage()); targetPage = i + 1; S.spread = A.spreadOf(i + 1); A.changed(); A.toast('Page ' + (i + 2) + ' ajoutée'); }
-    if (k === 'member') {
-      A.commit();
-      const tpl = window.SB.member({
-        title: 'CODE — Prénom Nom', kicker: 'Rôle · CODE', name: 'Prénom « Surnom » Nom', code: 'CODE', pip: '★', sig: 'Signature',
-        portrait: 'placeholder', cap: 'NOM — 1890', age: '… ans (né·e en …)', origin: '…', joined: '…',
-        quote: '« Sa réplique. »', intro: 'Présentation en quelques lignes.', family: 'Histoire familiale résumée.',
-        traits: [['Trait 1', '…'], ['Trait 2', '…'], ['Trait 3', '…']],
-        weak: '…', weakOrigin: 'Origine de la faiblesse.', weakPlay: 'situations où elle se joue.',
-        goal: 'Objectif personnel.', role: 'Rôle dans le groupe.', rel: 'Relation avec Billy et les autres Strays.'
-      });
-      const pages = JSON.parse(JSON.stringify(tpl));
-      pages.forEach(p => { p.id = A.uid(); p.els.forEach((e, n) => { e.id = A.uid(); e.z = n + 1; }); });
-      /* la fiche doit former une vraie double page : page gauche sur un index pair */
-      let at = i + 1; if (at % 2 === 1) at++; at = Math.min(at, ps.length);
-      ps.splice(at, 0, ...pages); targetPage = at; S.spread = A.spreadOf(at); A.changed();
-      A.toast('Double page de fiche ajoutée (pages ' + (at + 1) + '–' + (at + 2) + ')');
-    }
     if (k === 'dup') { A.commit(); ps.splice(i + 1, 0, cloneWithIds(ps[i])); targetPage = i + 1; S.spread = A.spreadOf(i + 1); A.changed(); A.toast('Page dupliquée'); }
     if (k === 'left') movePage(i, i - 1);
     if (k === 'right') movePage(i, i + 1);
     if (k === 'del') {
       if (ps.length <= 1) return;
-      if (!confirm(`Supprimer la page ${i}${ps[i].title ? ' « ' + ps[i].title + ' »' : ''} ?\n(Annulable avec Ctrl+Z tant que la session est ouverte.)`)) return;
+      if (!confirm(`Supprimer la page ${i + 1}${ps[i].title ? ' « ' + ps[i].title + ' »' : ''} ?\n(Annulable avec Ctrl+Z tant que la session est ouverte.)`)) return;
       A.commit(); ps.splice(i, 1); targetPage = Math.min(i, ps.length - 1); S.sel = null; A.changed(); updateSelBar();
     }
   });
 
+  /* ---------------- Ajouter une page : modèles ---------------- */
+  $('#btnAddPage').onclick = (ev) => toggleMenu($('#addPageMenu'), ev.currentTarget);
+  function insertTemplate(key) {
+    const [name, arg] = key.split(':');
+    const T = window.SB.tpl; if (!T[name]) return;
+    stopEditing();
+    const ps = S.book.pages;
+    const pages = JSON.parse(JSON.stringify(name === 'album' ? T.album(arg || 'four') : T[name]()));
+    pages.forEach(p => { p.id = A.uid(); p.els.forEach((e, n) => { e.id = A.uid(); e.z = n + 1; }); });
+    const lastOf = (kind) => { for (let k = ps.length - 1; k >= 0; k--) if (ps[k].kind === kind) return k; return -1; };
+    let at = targetPage + 1;
+    if (name === 'chronicle') { const l = lastOf('chronicle'); if (l >= 0) at = l + 1; }
+    if (name === 'album') { const l = lastOf('album'); if (l >= 0) at = l + 1; }
+    if (name === 'memberBlank' && at % 2 === 1) at++;      /* une fiche forme une vraie double page */
+    at = Math.max(1, Math.min(at, ps.length));
+    A.commit(); ps.splice(at, 0, ...pages);
+    targetPage = at; S.spread = A.spreadOf(at); S.sel = null; A.changed(); updateSelBar();
+    const what = { chronicle: 'Nouvelle chronique', chronicleCont: 'Suite de chronique', album: 'Page de souvenirs', freeText: 'Page de texte', letter: 'Lettre', newspaper: 'Page de journal', memberBlank: 'Fiche personnage (double page)', blank: 'Page blanche' }[name];
+    A.toast(what + ' ajoutée en page ' + (at + 1) + (name === 'chronicle' ? ' — double-cliquez sur la date, le titre et le récit pour écrire' : name === 'album' ? ' — double-cliquez sur un cadre pour importer une photo' : ''));
+  }
+  document.querySelectorAll('[data-tpl]').forEach(b => b.onclick = () => { $('#addPageMenu').hidden = true; insertTemplate(b.dataset.tpl); });
+
   /* Panneau des pages + glisser-déposer */
   function buildPageList() {
     const ol = $('#pageList'); if (!S.book) return;
-    const sw = { ivory: '#efe4cc', aged: '#e3cfa6', parch: '#cdb183', lined: '#e9e2cf', endpaper: '#3a5258', leather: '#2a1a10', board: '#a88a62', custom: '#777' };
+    const sw = { ivory: '#efe4cc', aged: '#e3cfa6', parch: '#cdb183', lined: '#e9e2cf', journal: '#dcc79c', album: '#2b2420', endpaper: '#3a5258', leather: '#2a1a10', board: '#a88a62', night: '#0c0a0a', custom: '#777' };
     ol.innerHTML = S.book.pages.map((p, i) => {
       const t = p.title || (p.els.find(e => e.type === 'text')?.html || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 30) || '(vide)';
-      return `<li draggable="true" data-i="${i}"><span class="num">${i}</span><span class="sw" style="background:${sw[p.bg] || '#ccc'}"></span><span class="nm">${t}</span></li>`;
+      return `<li draggable="true" data-i="${i}"><span class="num">${i + 1}</span><span class="sw" style="background:${sw[p.bg] || '#ccc'}"></span><span class="nm">${t}</span></li>`;
     }).join('');
     fillPageTarget();
   }
@@ -435,6 +459,7 @@
         const b = JSON.parse(await file.text());
         A.normalize(b);
         if (!confirm(`Remplacer le livre actuel par « ${file.name} » (${b.pages.length} pages) ?`)) return;
+        b.edition = window.STRAYS.edition || 1;   /* un projet importé n'est jamais remplacé au rechargement */
         A.setBook(b); await A.saveNow(); A.toast('Projet importé');
       } catch (e) { A.toast('Fichier de projet invalide.'); }
     }

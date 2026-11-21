@@ -68,9 +68,10 @@
       </div>
       <div class="tb-group">
         <span class="tb-label">Page</span>
-        <button data-page="add" title="Nouvelle page après celle-ci">+ Page</button>
+        <button id="btnAddPage" title="Ajouter une page (chronique, photos, lettre, journal, fiche…)">Ajouter une page ▾</button>
+        <button data-tpl="chronicle" class="accent-soft" title="Nouvelle page de journal datée, à la suite des chroniques">+ Nouvelle chronique</button>
+        <button data-tpl="album:four" class="accent-soft" title="Nouvelle page d'album photographique, à la suite des souvenirs">+ Nouvelle page de souvenirs</button>
         <button data-page="dup" title="Dupliquer la page">Dupliquer</button>
-        <button data-page="member" title="Ajouter la double page d’un nouveau membre (portrait, caractère, faille)">+ Membre</button>
         <button data-page="left" title="Déplacer vers l'avant">◂</button>
         <button data-page="right" title="Déplacer vers l'arrière">▸</button>
         <button data-page="del" title="Supprimer la page">Supprimer</button>
@@ -80,6 +81,8 @@
           <option value="aged">Papier jauni</option>
           <option value="parch">Parchemin sombre</option>
           <option value="lined">Papier ligné</option>
+          <option value="journal">Papier de journal plié</option>
+          <option value="album">Album noir</option>
           <option value="endpaper">Garde marbrée</option>
           <option value="leather">Cuir</option>
           <option value="board">Carton brut</option>
@@ -158,7 +161,16 @@
           <option value="oval">Médaillon ovale</option>
           <option value="plain">Sans cadre</option>
         </select>
-        <label class="chk"><input type="checkbox" id="fSepia"> Sépia</label>
+        <select id="fTone" title="Tonalité de la photographie">
+          <option value="sepia">Sépia</option>
+          <option value="bw">Noir et blanc</option>
+          <option value="color">Couleurs d'origine</option>
+        </select>
+        <label title="Recadrer : agrandir">⤢ <input id="fZoom" type="range" min="100" max="300" step="5"></label>
+        <label title="Recadrer : gauche ↔ droite">↔ <input id="fFx" type="range" min="0" max="100"></label>
+        <label title="Recadrer : haut ↕ bas">↕ <input id="fFy" type="range" min="0" max="100"></label>
+        <input id="fCap" class="cap-in" placeholder="Légende" title="Légende manuscrite">
+        <input id="fDate" class="cap-in" placeholder="Date" title="Date (ex. : 12 mai 1890)" style="width:90px">
       </div>
       <div class="tb-group sel-any">
         <label title="Rotation">↻ <input id="fRot" type="number" step="1" style="width:52px"></label>
@@ -214,6 +226,23 @@
 
   <!-- ===== MENUS ===== -->
   <div id="decoMenu" class="popmenu" hidden></div>
+  <div id="addPageMenu" class="popmenu" hidden>
+    <div class="am-h">Journal</div>
+    <button data-tpl="chronicle">Page de chronique<small>date, titre, récit, souvenir, signature</small></button>
+    <button data-tpl="chronicleCont">Suite de la chronique<small>quand le récit dépasse la page</small></button>
+    <div class="am-h">Photographies</div>
+    <button data-tpl="album:big">Une grande photographie</button>
+    <button data-tpl="album:two">Deux photographies côte à côte</button>
+    <button data-tpl="album:four">Quatre petites photographies</button>
+    <button data-tpl="album:text">Une photographie et un long texte</button>
+    <button data-tpl="album:collage">Collage libre</button>
+    <div class="am-h">Documents</div>
+    <button data-tpl="freeText">Page de texte libre</button>
+    <button data-tpl="letter">Lettre ancienne</button>
+    <button data-tpl="newspaper">Journal découpé</button>
+    <button data-tpl="memberBlank">Nouvelle fiche personnage<small>double page : portrait, caractère, faille</small></button>
+    <button data-tpl="blank">Page blanche</button>
+  </div>
   <div id="projectMenu" class="popmenu" hidden>
     <button data-proj="export">Exporter le projet (.json)</button>
     <button data-proj="import">Importer un projet…</button>
@@ -224,6 +253,7 @@
     <button data-proj="reset" class="danger">Réinitialiser le livre d'origine</button>
   </div>
 
+  <div id="lightbox" hidden><div class="lb-img"></div><div class="lb-cap"></div></div>
   <div id="toast" role="status"></div>
   <input type="file" id="fileImage" accept="image/*" hidden>
   <input type="file" id="fileBg" accept="image/*" hidden>

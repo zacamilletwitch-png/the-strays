@@ -337,3 +337,47 @@
 .el-c .trait h4 { font-family: 'IM Fell English SC', serif; font-weight: normal; font-size: 15.5px; color: #5e1a12; margin: 0 0 .2em; letter-spacing: .05em; }
 .el-c .trait p { font-style: italic; font-size: 14px; line-height: 1.35; margin: 0; }
 .el-c .kick { font-family: 'IM Fell English SC', serif; color: var(--ink-red); letter-spacing: .18em; font-size: 13px; margin: 0 0 .2em; }
+
+/* ---- 6e édition : chroniques, album, photographies ---- */
+.bg-journal {
+  background-color: #e6d4ad;
+  background-image:
+    linear-gradient(to right, transparent 49.6%, rgba(90,60,25,.10) 49.85%, rgba(255,250,235,.22) 50.1%, transparent 50.6%),
+    linear-gradient(to bottom, transparent 49.6%, rgba(90,60,25,.08) 49.85%, rgba(255,250,235,.18) 50.1%, transparent 50.6%),
+    radial-gradient(circle at 100% 100%, rgba(90,55,20,.35), transparent 14%),
+    radial-gradient(circle at 0 0, rgba(90,55,20,.22), transparent 11%),
+    radial-gradient(ellipse at 50% 45%, transparent 45%, rgba(110,70,25,.38) 100%), var(--noise), var(--mottle), var(--mottle), var(--fibers);
+}
+.bg-album {
+  background-color: #2b2420;
+  background-image: radial-gradient(ellipse at 50% 45%, rgba(80,60,40,.25), transparent 60%), radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(0,0,0,.55) 100%), var(--noise), var(--mottle);
+  color: #e9dcc0;
+}
+.bg-album .folio { color: rgba(233,220,192,.55); }
+.bg-album .v-hand .el-c { color: #e6d6b0; }
+.bg-album .el-c h2, .bg-album .el-c h3 { color: #ead7a8; }
+
+/* Cadrage des images : zoom + point focal */
+.el[data-type="image"] .crop { position: relative; width: 100%; height: 100%; overflow: hidden; }
+.el[data-type="image"] .crop > img, .el[data-type="image"] .crop > svg { width: 100%; height: 100%; display: block; object-fit: cover; }
+.f-oval .crop { border-radius: 50%; }
+.tone-bw img, .tone-bw .crop > svg { filter: grayscale(1) contrast(1.08) brightness(.97); }
+.tone-color img { filter: none; }
+/* Légende + date manuscrites */
+.el[data-type="image"] .cap {
+  position: absolute; left: 0; right: 0; top: calc(100% + 4px); text-align: center; pointer-events: none;
+  font-family: 'Homemade Apple', cursive; font-size: 12px; line-height: 1.5; color: #2c3a55; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.f-photo.has-cap .el-c { padding-bottom: 30px; }
+.f-photo.has-cap .cap { top: auto; bottom: 6px; color: #3a2a1a; }
+.f-cabinet .cap { display: none; }
+.bg-album .el[data-type="image"]:not(.f-photo) .cap { color: #e6d6b0; }
+
+/* Agrandissement en lecture */
+.mode-read .el[data-type="image"] { cursor: zoom-in; }
+/* Chronologie horizontale illustrée */
+.el-c .tlh { display: flex; justify-content: space-between; position: relative; padding-top: 6px; }
+.el-c .tlh::before { content: ""; position: absolute; left: 4%; right: 4%; top: 28px; border-top: 1.5px solid rgba(125,36,24,.55); }
+.el-c .tlh span { position: relative; display: flex; flex-direction: column; align-items: center; gap: 10px; font-size: 20px; color: #5e1a12; }
+.el-c .tlh span::after { content: ""; position: absolute; top: 18px; width: 9px; height: 9px; border-radius: 50%; background: #7d2418; box-shadow: 0 0 0 3px #f1e7d0; }
+.el-c .tlh b { font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: .06em; color: #7d2418; font-weight: 600; order: -1; margin-bottom: 8px; }

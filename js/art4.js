@@ -7,7 +7,7 @@
   const svg = (vb, body, extra = '') => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" ${extra}>${body}</svg>`;
 
   /* ---- Carte ancienne : de Blackwater à Rhodes ---- */
-  function mapEast(c) {
+  function mapEast(c, route = true) {
     const f = (!c || c === 'ink') ? '#3a2716' : c === 'gold' ? 'url(#gold)' : c;
     let trees = '', mts = '', fields = '', marsh = '';
     [[60,70],[80,58],[100,76],[72,96],[120,92],[48,118],[96,120]].forEach(([x, y]) => trees += `<path d="M${x},${y} l-5,9 h10z M${x},${y + 9} v4"/>`);
@@ -23,8 +23,8 @@
       <path d="M262,196 C280,200 296,200 312,200" stroke-width="1.2"/>
       <path d="M14,300 C80,296 160,304 240,300 C270,298 290,300 304,302" stroke-width="1" stroke-dasharray="7 4"/>
       <g stroke-width="1">${trees}</g><g stroke-width="1.1">${mts}</g>${fields}${marsh}
-      <path d="M182,214 C210,236 250,250 284,250 C300,250 316,244 330,246 C352,250 370,256 386,262" stroke="#7d2418" stroke-width="2" stroke-dasharray="1 6"/>
-      <path d="M380,252 l10,10 l-13,4" stroke="#7d2418" stroke-width="1.6"/>
+      ${route ? `<path d="M182,214 C210,236 250,250 284,250 C300,250 316,244 330,246 C352,250 370,256 386,262" stroke="#7d2418" stroke-width="2" stroke-dasharray="1 6"/>
+      <path d="M380,252 l10,10 l-13,4" stroke="#7d2418" stroke-width="1.6"/>` : `<ellipse cx="428" cy="300" rx="76" ry="52" transform="rotate(-12 428 300)" stroke="#7d2418" stroke-width="1.3" stroke-dasharray="5 4"/>`}
       <path d="M302,246 l20,0 M302,252 l20,0" stroke-width="1"/>
       <g transform="translate(440 80)" stroke-width="1"><circle r="22"/><path d="M0,-30 L5,0 L0,30 L-5,0Z M-30,0 L0,-5 L30,0 L0,5Z" fill="${f}" fill-opacity=".15"/></g>
       <path d="M30,392 h80 M30,388 v8 M70,388 v8 M110,388 v8" stroke-width="1"/>
@@ -32,17 +32,18 @@
       <g fill="${f}" font-family="IM Fell English, serif">
       <text x="440" y="46" font-size="11" text-anchor="middle">N</text>
       <circle cx="178" cy="212" r="5" fill="#7d2418"/><text x="112" y="236" font-size="17" font-style="italic">Blackwater</text>
-      <circle cx="392" cy="264" r="5" fill="#7d2418"/><text x="400" y="288" font-size="17" font-style="italic">Rhodes</text>
+      <circle cx="392" cy="264" r="${route ? 5 : 4}" fill="${route ? '#7d2418' : f}"/><text x="400" y="288" font-size="17" font-style="italic">Rhodes</text>
+      ${route ? '' : '<circle cx="462" cy="322" r="4"/><text x="486" y="346" font-size="16" font-style="italic" text-anchor="end">Saint-Denis</text>'}
       <text x="178" y="176" font-size="12" font-style="italic" opacity=".8">le lac</text>
       <text x="40" y="160" font-size="12" letter-spacing="2">TALL TREES</text>
       <text x="40" y="270" font-size="15" letter-spacing="3" font-family="IM Fell English SC, serif">WEST ELIZABETH</text>
       <text x="350" y="160" font-size="15" letter-spacing="3" font-family="IM Fell English SC, serif">LEMOYNE</text>
       <text x="180" y="100" font-size="11" letter-spacing="2">NEW HANOVER</text>
       <text x="352" y="226" font-size="10" font-style="italic">plantations</text>
-      <text x="404" y="390" font-size="10" font-style="italic">bayous</text>
+      <text x="${route ? 404 : 420}" y="${route ? 390 : 396}" font-size="10" font-style="italic">bayous</text>
       <text x="318" y="128" font-size="10" font-style="italic" transform="rotate(84 318 128)">la rivière</text>
-      <text x="214" y="276" font-size="11" font-style="italic" fill="#7d2418">route de 1890</text>
-      <text x="390" y="306" font-size="10" font-style="italic" fill="#7d2418">« là où l'on va »</text>
+      ${route ? `<text x="214" y="276" font-size="11" font-style="italic" fill="#7d2418">route de 1890</text>
+      <text x="390" y="306" font-size="10" font-style="italic" fill="#7d2418">« là où l'on va »</text>` : `<text x="356" y="372" font-size="11" font-style="italic" fill="#7d2418">quelque part par ici ?</text>`}
       <text x="30" y="384" font-size="10">Milles (approx.)</text>
       <text x="22" y="294" font-size="9" font-style="italic" opacity=".8">limite approximative</text></g>`);
   }
@@ -96,7 +97,17 @@
   const half = (side) => svg(side === 'L' ? '0 0 560 800' : '560 0 560 800', scene, 'preserveAspectRatio="xMidYMid slice"');
 
   const lib = window.ART.lib;
-  lib.mapEast = { label: 'Carte : de Blackwater à Rhodes', fn: mapEast, w: 480, h: 403 };
+  lib.mapEast = { label: 'Carte : de Blackwater à Rhodes (route)', fn: (c) => mapEast(c, true), w: 480, h: 403 };
+  lib.mapRumor = { label: "Carte : Blackwater et l'Est (sans route)", fn: (c) => mapEast(c, false), w: 480, h: 403 };
+  /* Mémé Lune : croissant au visage de vieille dame */
+  lib.moon = { label: 'Mémé Lune', w: 110, h: 110, fn: (c) => {
+    const f = (!c || c === 'ink') ? '#3a2716' : c === 'gold' ? 'url(#gold)' : c;
+    return svg('0 0 110 110', `<g fill="none" stroke="${f}" stroke-linecap="round" filter="url(#roughInk)">
+      <path d="M62,12 C34,16 18,38 20,60 C22,84 42,100 66,98 C50,90 40,74 40,56 C40,38 48,22 62,12Z" fill="${f}" fill-opacity=".12" stroke-width="1.6"/>
+      <path d="M44,44 q4,-3 8,0" stroke-width="1.2"/><path d="M46,58 q3,4 1,8" stroke-width="1"/><path d="M45,72 q5,3 9,0" stroke-width="1.1"/>
+      <path d="M41,34 c4,-6 10,-9 16,-10" stroke-width=".8" stroke-dasharray="2 2"/>
+      <circle cx="86" cy="26" r="1.4" fill="${f}"/><circle cx="94" cy="58" r="1" fill="${f}"/><circle cx="80" cy="84" r="1.2" fill="${f}"/></g>`);
+  } };
   lib.rhodesL = { label: 'Rhodes, 1890 (page gauche)', fn: () => half('L'), w: 560, h: 800 };
   lib.rhodesR = { label: 'Rhodes, 1890 (page droite)', fn: () => half('R'), w: 560, h: 800 };
 })();

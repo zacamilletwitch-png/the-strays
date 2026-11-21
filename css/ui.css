@@ -186,3 +186,17 @@ button, select, input { font-family: inherit; }
 
 /* Site publié : lecture seule */
 .public #btnEdit, .public #toolbar, .public #pagePanel { display: none !important; }
+
+/* ---- Visionneuse photo (mode lecture) ---- */
+#lightbox { position: fixed; inset: 0; z-index: 500; background: rgba(10,7,4,.9); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; cursor: zoom-out; }
+#lightbox[hidden] { display: none; }
+#lightbox .lb-img { max-width: 88vw; max-height: 80vh; box-shadow: 0 10px 40px rgba(0,0,0,.7); border: 10px solid #ece2cc; background: #ece2cc; }
+#lightbox .lb-img img, #lightbox .lb-img svg { display: block; max-width: calc(88vw - 20px); max-height: calc(80vh - 20px); width: auto; height: auto; }
+#lightbox .lb-img svg { width: min(70vw, 900px); height: auto; }
+#lightbox .lb-cap { font-family: 'Homemade Apple', cursive; color: #e6d6b0; font-size: 16px; text-align: center; }
+/* Menu « Ajouter une page » */
+#addPageMenu { min-width: 250px; }
+#addPageMenu .am-h { font-family: 'IM Fell English SC', serif; font-size: 12px; letter-spacing: .12em; opacity: .7; padding: 6px 10px 2px; }
+#addPageMenu button small { display: block; opacity: .65; font-size: 11.5px; }
+.sel-img input[type=range] { width: 70px; vertical-align: middle; }
+.sel-img input.cap-in { width: 120px; }

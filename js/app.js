@@ -113,21 +113,29 @@
       return `<div class="el-c" style="${styleOf(e.st)}"><ul class="toc-list">${items.map(x => `<li class="lvl${x.lvl}" data-goto="${x.i}"><span class="t">${esc(x.t)}</span><span class="d"></span><span class="n">${x.i + 1}</span></li>`).join('')}</ul></div>`;
     }
     if (e.type === 'image') {
-      let inner;
-      if (e.src && e.src.startsWith('art:')) inner = window.ART.render(e.src.slice(4), e.col).replace('xMidYMid meet', 'xMidYMid slice') + '<div class="ph-hint">Illustration remplaçable</div>';
-      else if (e.src && e.src.startsWith('portrait:')) inner = window.ART.portrait(e.src.slice(9)).replace('xMidYMid meet', 'xMidYMid slice') + '<div class="ph-hint">Portrait à remplacer</div>';
-      else if (!e.src || e.src === 'placeholder') inner = placeholderSvg() + '<div class="ph-hint">Photo à importer</div>';
-      else inner = `<img src="${e.src}" alt="" draggable="false">`;
+      /* cadrage : zoom (fz) et point focal (fx, fy en %) */
+      const fx = e.fx ?? 50, fy = e.fy ?? 50, fz = e.fz || 1;
+      const crop = `style="object-position:${fx}% ${fy}%;transform:scale(${fz});transform-origin:${fx}% ${fy}%"`;
+      const svgC = (svg) => svg.replace('xMidYMid meet', 'xMidYMid slice').replace('<svg ', `<svg ${crop} `);
+      let inner, hint = '';
+      if (e.src && e.src.startsWith('art:')) { inner = svgC(window.ART.render(e.src.slice(4), e.col)); hint = 'Illustration remplaçable'; }
+      else if (e.src && e.src.startsWith('portrait:')) { inner = svgC(window.ART.portrait(e.src.slice(9))); hint = 'Portrait à remplacer'; }
+      else if (!e.src || e.src === 'placeholder') { inner = placeholderSvg(); hint = 'Double-clic : importer une photo'; }
+      else inner = `<img src="${e.src}" alt="" draggable="false" ${crop}>`;
       const corners = e.frame === 'corners' ? '<i class="pc tl"></i><i class="pc tr"></i><i class="pc bl"></i><i class="pc br"></i>' : '';
-      return `<div class="el-c" data-caption="${esc(e.cap || '')}">${inner}${corners}</div>`;
+      const capTxt = [e.cap, e.date].filter(Boolean).join(' — ');
+      return `<div class="el-c" data-caption="${esc(capTxt)}"><div class="crop">${inner}</div>${hint ? `<div class="ph-hint">${hint}</div>` : ''}${corners}${capTxt ? `<div class="cap">${esc(capTxt)}</div>` : ''}</div>`;
     }
     return '';
   }
   const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
+  /* Tonalité d'une photo : sépia, noir et blanc ou couleurs d'origine */
+  const toneOf = (e) => e.tone || (e.sepia === false ? 'color' : 'sepia');
+  const toneClass = (e) => ({ sepia: 'sepia', bw: 'tone-bw', color: 'tone-color' }[toneOf(e)]);
   function renderEl(e, edit) {
     const d = document.createElement('div');
-    d.className = 'el' + (e.v ? ' v-' + e.v : '') + (e.type === 'image' ? ` f-${e.frame || 'photo'}${e.sepia ? ' sepia' : ''}` : '') + (e.lock ? ' locked' : '');
+    d.className = 'el' + (e.v ? ' v-' + e.v : '') + (e.type === 'image' ? ` f-${e.frame || 'photo'} ${toneClass(e)}${e.cap || e.date ? ' has-cap' : ''}` : '') + (e.lock ? ' locked' : '');
     d.dataset.id = e.id; d.dataset.type = e.type;
     d.style.cssText = `left:${e.x}px;top:${e.y}px;width:${e.w}px;height:${e.h}px;transform:rotate(${e.r || 0}deg);opacity:${e.o ?? 1};z-index:${e.z || 1}`;
     d.innerHTML = elHTML(e) + (edit ? '<i class="h se"></i><i class="h sw"></i><i class="h ne"></i><i class="h e"></i><i class="h s"></i><i class="h rot"></i>' : '');
@@ -309,8 +317,23 @@
   book.addEventListener('click', (e) => {
     if (S.mode !== 'read') return;
     const li = e.target.closest('[data-goto]');
-    if (li) goToPage(+li.dataset.goto);
+    if (li) return goToPage(+li.dataset.goto);
+    const im = e.target.closest('.slot .el[data-type="image"]');
+    if (im) openLightbox(im);
   });
+  /* Visionneuse : agrandir une photographie en mode lecture */
+  function openLightbox(node) {
+    const pg = node.closest('.page'); const p = pg && S.book.pages[+pg.dataset.idx];
+    const el = p && p.els.find(x => x.id === node.dataset.id); if (!el) return;
+    const lb = $('#lightbox'), box = lb.querySelector('.lb-img');
+    const media = node.querySelector('.crop > img, .crop > svg'); if (!media) return;
+    const c = media.cloneNode(true); c.removeAttribute('style');
+    if (c.tagName.toLowerCase() === 'svg') c.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    box.innerHTML = ''; box.className = 'lb-img ' + toneClass(el); box.appendChild(c);
+    lb.querySelector('.lb-cap').textContent = [el.cap, el.date].filter(Boolean).join(' — ');
+    lb.hidden = false;
+  }
+  $('#lightbox').addEventListener('click', () => { $('#lightbox').hidden = true; });
   $('#btnFull').onclick = () => {
     if (document.fullscreenElement) document.exitFullscreen();
     else document.documentElement.requestFullscreen?.().catch(() => toast('Plein écran refusé par le navigateur'));
@@ -325,7 +348,7 @@
     else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { flip(-1); e.preventDefault(); }
     else if (e.key === 'Home') goToPage(0);
     else if (e.key === 'End') goToPage(N() - 1);
-    else if (e.key === 'Escape') $('#tocDrawer').hidden = true;
+    else if (e.key === 'Escape') { $('#tocDrawer').hidden = true; $('#lightbox').hidden = true; }
   });
   /* Glissement tactile */
   let tx = null;
@@ -382,16 +405,21 @@
     await DB.open();
     let stored = await DB.get('book');
     const ed = window.STRAYS.edition || 1;
-    let upgraded = false;
+    let upgraded = false, carried = 0;
+    /* Une nouvelle édition n'est chargée que si le livre enregistré est plus ancien
+       (refonte demandée). Les simples mises à jour de l'application ne changent pas
+       « edition » : le livre, ses chroniques et ses photos restent intacts. */
     if (stored && (stored.edition || 1) < ed) {
-      /* Nouvelle édition du livre : l'ancienne version est mise de côté, jamais effacée */
+      /* L'ancienne version est mise de côté, jamais effacée ; ses images importées sont reprises */
       try { await DB.put('book-backup', stored); } catch (e) {}
-      stored = null; upgraded = true;
+      const fresh = defaultBook();
+      try { carried = window.SB.carry(stored, fresh); } catch (e) {}
+      stored = null; upgraded = true; S.book = fresh;
     }
-    try { S.book = stored ? normalize(stored) : defaultBook(); } catch (e) { S.book = defaultBook(); }
+    if (!upgraded) { try { S.book = stored ? normalize(stored) : defaultBook(); } catch (e) { S.book = defaultBook(); } }
     if (upgraded) { try { localStorage.removeItem('strays-spread'); } catch (e) {} saveNow(); }
     if (!DB.db) toast('Stockage local indisponible : pensez à exporter votre projet.');
-    else if (upgraded) setTimeout(() => toast('Nouvelle édition chargée. Votre version précédente est conservée : Projet ▸ Restaurer la version précédente.'), 900);
+    else if (upgraded) setTimeout(() => toast('Nouvelle édition chargée' + (carried ? ' — vos ' + carried + ' photos et portraits ont été repris' : '') + '. L’ancienne version reste disponible : Projet ▸ Restaurer la version précédente.'), 900);
     let start = 0; try { start = +localStorage.getItem('strays-spread') || 0; } catch (e) {}
     fit();
     S.spread = spreadOf(Math.min(start, N() - 1));

@@ -54,3 +54,11 @@ Flèches ← →, clic sur les coins des pages, glissement au doigt sur mobile, 
 - Structure : couverture · présentation du groupe · histoire 1882-1890 (double page avec chronologie et carte vers Rhodes) · une double page par Stray (portrait, signalement, carte de code, présentation, histoire familiale / trois traits, faiblesse et son origine, objectif, rôle, place parmi les Strays) · fonctionnement et valeurs · notre projet et ce que nous voulons apporter · accompagnement souhaité et conclusion.
 - **+ Membre** ajoute désormais une double page de fiche au même format, placée pour former une vraie double page.
 - Au premier chargement, la version précédente (4e édition) reste récupérable : Projet ▸ Restaurer la version précédente.
+
+## 6e édition — Chroniques des chiens errants (livre vivant)
+- Le livre devient un registre d'archives de 1890, entièrement immersif : plus aucune page destinée au staff, au serveur ou aux joueurs. 20 pages au départ : couverture · Les chiens errants · Les enfants de Blackwater (chronologie illustrée, carte) · une double page par Stray · Ni maîtres, ni chaînes · Au-delà de Blackwater (carte de l'Est sans itinéraire) · Chroniques des chiens errants (journal) · Souvenirs de famille (album).
+- Vos portraits et photos importés sont repris automatiquement lors du passage à cette édition. L'ancienne version reste disponible : Projet ▸ Restaurer la version précédente.
+- Mode édition : **+ Nouvelle chronique** (ajoutée à la suite des précédentes), **+ Nouvelle page de souvenirs**, et **Ajouter une page ▾** : chronique, suite de chronique, une grande photo, deux photos, quatre photos, photo + texte, collage, texte libre, lettre ancienne, journal découpé, fiche personnage (double page), page blanche.
+- Photographies : double-clic pour importer ou remplacer ; tonalité Sépia / Noir et blanc / Couleurs d'origine ; recadrage (⤢ agrandir, ↔ ↕ déplacer le cadrage) ; légende et date manuscrites ; déplacement, taille, rotation comme tout élément.
+- Mode lecture : un clic sur une photographie l'agrandit.
+- Les mises à jour de l'application ne remplacent plus le contenu : seul un changement d'édition demandé explicitement le fait, et l'ancienne version est toujours conservée. Un projet importé n'est jamais remplacé au rechargement.
